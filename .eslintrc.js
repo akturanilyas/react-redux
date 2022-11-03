@@ -2,17 +2,18 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    'jest/globals': true
+    'jest/globals': true,
   },
   extends: ['airbnb-base', 'plugin:jest/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
-    sourceType: 'module'
+    sourceType: 'module',
   },
   plugins: ['@typescript-eslint'],
   rules: {
     indent: 0,
+    'no-param-reassign': 0,
     'import/no-import-module-exports': 0,
     'no-shadow': 'off',
     'linebreak-style': 0,
@@ -31,14 +32,16 @@ module.exports = {
     'max-len': [2, 150, 4],
     'strict-pro': 0,
     'newline-before-return': 2,
-    yoda: 'off'
+    'operator-linebreak': 0,
+    'implicit-arrow-linebreak': 0,
+    yoda: 'off',
   },
   settings: {
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        moduleDirectory: ['node_modules', 'src/']
-      }
-    }
-  }
+        moduleDirectory: ['node_modules', 'src/'],
+      },
+    },
+  },
 };

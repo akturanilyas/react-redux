@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
+import { Button } from '@mui/material';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { decrement, increment, incrementByAmount, incrementAsync, incrementIfOdd, selectCount } from './counterSlice';
 import styles from './Counter.module.css';
-import { Button } from '@mui/material';
 
 export function Counter() {
   const count = useAppSelector(selectCount);
