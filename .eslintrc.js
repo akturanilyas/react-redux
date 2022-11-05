@@ -19,7 +19,7 @@ module.exports = {
     'linebreak-style': 0,
     'import/extensions': 'off',
     'import/prefer-default-export': 0,
-    'no-console': 2,
+    'no-console': 1,
     'no-return-await': 2,
     'consistent-return': 'off',
     'import/no-dynamic-require': 2,
