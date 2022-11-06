@@ -9,15 +9,21 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { AuthService } from '../../api/authService';
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const authService = new AuthService();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const firstName = data.get('firstName') as string;
+    const lastName = data.get('lastName') as string;
+    const email = data.get('email') as string;
+    const username = data.get('username') as string;
+    const password = data.get('password') as string;
+
+    await authService.signUp(firstName, lastName, email, username, password);
   };
 
   return (
@@ -59,6 +65,9 @@ export default function SignUp() {
                 name="lastName"
                 autoComplete="family-name"
               />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField required fullWidth id="username" label="Username" name="username" />
             </Grid>
             <Grid item xs={12}>
               <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" />

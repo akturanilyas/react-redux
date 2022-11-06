@@ -8,16 +8,19 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { AuthService } from '../../api/authService';
 import { StyledLink } from '../../components/styled-link/styledLink';
 
 export default function Login() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const authService = new AuthService();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    const username = data.get('username') as string;
+    const password = data.get('password') as string;
+
+    await authService.login(username, password);
   };
 
   return (
@@ -37,7 +40,7 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box component="form" noValidate onSubmit={(event) => handleSubmit(event)} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField required fullWidth id="username" label="Username" name="username" autoComplete="username" />

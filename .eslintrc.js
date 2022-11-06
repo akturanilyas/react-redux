@@ -17,6 +17,7 @@ module.exports = {
     'import/no-import-module-exports': 0,
     'no-shadow': 'off',
     'linebreak-style': 0,
+    'no-confusing-arrow': 0,
     'import/extensions': 'off',
     'import/prefer-default-export': 0,
     'no-console': 1,
@@ -35,6 +36,8 @@ module.exports = {
     'operator-linebreak': 0,
     'implicit-arrow-linebreak': 0,
     yoda: 'off',
+    'class-methods-use-this': 0,
+    camelcase: 0,
   },
   settings: {
     'import/resolver': {
