@@ -1,39 +1,31 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
-import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import List from '@mui/material/List';
-import Paper from '@mui/material/Paper';
 import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import { mainListItems, secondaryListItems } from './listItems';
-// import Orders from './Orders';
 
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+export const mainListItems = (
+  <React.Fragment>
+    <ListItemButton>
+      <ListItemIcon>
+        <ShoppingCartIcon />
+      </ListItemIcon>
+      <ListItemText primary="Dashboard" />
+    </ListItemButton>
+  </React.Fragment>
+);
 
 const drawerWidth: number = 240;
 
@@ -93,7 +85,7 @@ export default function Root() {
 
   return (
     <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', height: '100%' }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
           <Toolbar
@@ -107,13 +99,12 @@ export default function Root() {
               aria-label="open drawer"
               onClick={toggleDrawer}
               sx={{
-                marginRight: '36px',
                 ...(open && { display: 'none' }),
               }}
             >
               <MenuIcon />
             </IconButton>
-            <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
+            <Typography component="h1" variant="h6" color="inherit" sx={{ flexGrow: 1 }}>
               Dashboard
             </Typography>
             <IconButton color="inherit">
@@ -138,57 +129,38 @@ export default function Root() {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">
-            main listems
-            <Divider sx={{ my: 1 }} />
-            secondory list
-          </List>
+          <List component="nav">{mainListItems}</List>
         </Drawer>
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-          }}
-        >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  chards
-                </Paper>
-              </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  deposits
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>orders</Paper>
-              </Grid>
-            </Grid>
-            <Copyright sx={{ pt: 4 }} />
-          </Container>
-        </Box>
+        <div className="row p-0 m-0" style={{ width: '100%' }}>
+          <div className="col-2 p-0 m-0">
+            <h1 style={{ background: '#af0404' }}>sidebar</h1>
+            <h1 style={{ background: '#af0404' }}>sidebar</h1>
+          </div>
+          <div className="col-10 p-0 m-0">
+            <Box
+              component="main"
+              sx={{
+                flexGrow: 1,
+                height: '100vh',
+                overflow: 'auto',
+                background: '#363030',
+              }}
+            >
+              <Toolbar />
+              <Toolbar style={{ background: '#af0404' }}>asn dajksndkjasn</Toolbar>
+              <div style={{ background: '#af0404', height: '70%' }} className={'px-5'}>
+                Yazılar
+              </div>
+              <TextField
+                id="outlined-basic"
+                placeholder={'write something'}
+                variant="outlined"
+                fullWidth={true}
+                className={'p-5'}
+              />
+            </Box>
+          </div>
+        </div>
       </Box>
     </ThemeProvider>
   );
