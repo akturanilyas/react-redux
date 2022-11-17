@@ -7,17 +7,22 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { defaultConstant } from '../../constants/defaultConstant';
-import { Navigation } from './Navigation';
+import Navigation from './Navigation';
 
 const mdTheme = createTheme();
 
 export default function Root() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const changePage = (url: string) => {
+    navigate(url);
   };
 
   const pages = [
@@ -51,7 +56,7 @@ export default function Root() {
               color="inherit"
               aria-label="open drawer"
               edge="start"
-              onClick={handleDrawerToggle}
+              onClick={() => changePage('/ilyas')}
               sx={{ mr: 2, display: { sm: 'none' } }}
             >
               <MenuIcon />
@@ -67,13 +72,13 @@ export default function Root() {
           sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${defaultConstant.DRAWER_WIDTH}px)` } }}
         >
           <Toolbar />
-          <BrowserRouter>
-            <Routes>
-              {pages.map((item) => {
-                return <Route path={item.url} element={item.component} />;
-              })}
-            </Routes>
-          </BrowserRouter>
+          <Routes>
+            {pages.map((item) => {
+              return <Route path={item.url} element={item.component} />;
+            })}
+
+            <Route path={'*'} element={<h1>Not found</h1>} />
+          </Routes>
         </Box>
       </Box>
     </ThemeProvider>

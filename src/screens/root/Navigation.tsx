@@ -8,8 +8,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { defaultConstant } from '../../constants/defaultConstant';
-import changeUrl from '../../helpers/navigationHelper';
 
 interface NavigationProps {
   window?: () => Window;
@@ -18,8 +18,13 @@ interface NavigationProps {
   pages: { url: string; title: string; component: any; icon: any }[];
 }
 
-export const Navigation = (props: NavigationProps) => {
+export default function Navigation(props: NavigationProps) {
   const { window, mobileOpen, handleDrawerToggle, pages } = props;
+  const navigate = useNavigate();
+
+  const navigateTo = (url: string) => {
+    navigate(url);
+  };
 
   const drawer = (
     <div>
@@ -28,8 +33,7 @@ export const Navigation = (props: NavigationProps) => {
           <ListItem
             key={index}
             onClick={async () => {
-              console.log('asd');
-              await changeUrl(item.url);
+              navigateTo(item.url);
             }}
             disablePadding
           >
@@ -78,4 +82,4 @@ export const Navigation = (props: NavigationProps) => {
       </Drawer>
     </Box>
   );
-};
+}
