@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2945d074-1bd2-4454-a8ef-ada27b2cec18" name="Changes" comment="Remove unnecessary config files">
+    <list default="true" id="2945d074-1bd2-4454-a8ef-ada27b2cec18" name="Changes" comment="Fix navigation">
+      <change afterPath="$PROJECT_DIR$/src/screens/chat/Chat.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/navigationHelper.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/root/Navigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/root/Navigation.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screens/root/Root.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/root/Root.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +17,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -89,7 +86,7 @@
       <workItem from="1667572267182" duration="602000" />
       <workItem from="1667584548261" duration="12948000" />
       <workItem from="1668706772403" duration="169000" />
-      <workItem from="1668707566502" duration="2585000" />
+      <workItem from="1668707566502" duration="2867000" />
     </task>
     <task id="LOCAL-00001" summary="Fix prettier">
       <created>1667494599793</created>
@@ -112,7 +109,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667494706865</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Fix navigation">
+      <created>1668710409220</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1668710409220</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,6 +137,7 @@
     <MESSAGE value="Init commit" />
     <MESSAGE value="Fix prettier" />
     <MESSAGE value="Remove unnecessary config files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove unnecessary config files" />
+    <MESSAGE value="Fix navigation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix navigation" />
   </component>
 </project>

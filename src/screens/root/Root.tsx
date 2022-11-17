@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { defaultConstant } from '../../constants/defaultConstant';
+import Chat from '../chat/Chat';
 import Navigation from './Navigation';
 
 const mdTheme = createTheme();
@@ -27,9 +28,9 @@ export default function Root() {
 
   const pages = [
     {
-      url: '/url',
+      url: '/chat',
       title: 'title',
-      component: <h1>titlteea</h1>,
+      component: <Chat />,
       icon: 'icon',
     },
     {
