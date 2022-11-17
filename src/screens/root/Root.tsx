@@ -1,14 +1,9 @@
-import MenuIcon from '@mui/icons-material/Menu';
-import AppBar from '@mui/material/AppBar';
+import { AppBar, Toolbar } from '@mui/material';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import IconButton from '@mui/material/IconButton';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import { defaultConstant } from '../../constants/defaultConstant';
+import { Route, Routes } from 'react-router-dom';
 import Chat from '../chat/Chat';
 import Navigation from './Navigation';
 
@@ -16,14 +11,9 @@ const mdTheme = createTheme();
 
 export default function Root() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
-
-  const changePage = (url: string) => {
-    navigate(url);
   };
 
   const pages = [
@@ -43,45 +33,27 @@ export default function Root() {
 
   return (
     <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: 'flex' }}>
-        <CssBaseline />
-        <AppBar
-          position="fixed"
-          sx={{
-            width: { sm: `calc(100% - ${defaultConstant.DRAWER_WIDTH}px)` },
-            ml: { sm: `${defaultConstant.DRAWER_WIDTH}px` },
-          }}
-        >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={() => changePage('/ilyas')}
-              sx={{ mr: 2, display: { sm: 'none' } }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              Responsive drawer
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Navigation handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} pages={pages} />
-        <Box
-          component="main"
-          sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${defaultConstant.DRAWER_WIDTH}px)` } }}
-        >
-          <Toolbar />
-          <Routes>
-            {pages.map((item) => {
-              return <Route path={item.url} element={item.component} />;
-            })}
+      <AppBar position="static">
+        <Toolbar></Toolbar>
+      </AppBar>
 
-            <Route path={'*'} element={<h1>Not found</h1>} />
-          </Routes>
-        </Box>
-      </Box>
+      <div className={'h-100 row m-0'}>
+        <div className="col-3">
+          <Navigation handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} pages={pages} />
+        </div>
+        <div className="col-9 m-0">
+          <Box className={'h-100'}>
+            <Routes>
+              {pages.map((item) => {
+                return <Route path={item.url} element={item.component} />;
+              })}
+
+              <Route path={'*'} element={<h1>Not found</h1>} />
+            </Routes>
+          </Box>
+        </div>
+        <CssBaseline />
+      </div>
     </ThemeProvider>
   );
 }

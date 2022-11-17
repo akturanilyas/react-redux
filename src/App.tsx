@@ -5,11 +5,9 @@ import Root from './screens/root/Root';
 
 function App() {
   return (
-    <div>
-      <BrowserRouter>
-        <Root />
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Root />
+    </BrowserRouter>
   );
 }
 
