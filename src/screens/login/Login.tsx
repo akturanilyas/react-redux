@@ -8,20 +8,40 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { AuthService } from '../../api/authService';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { StyledLink } from '../../components/styled-link/styledLink';
+import { UrlConstant } from '../../constants/urlConstant';
+import { login } from '../../features/auth/authSlice';
+import { useLoginQueryMutation } from '../../services/auth';
 
 export default function Login() {
-  const authService = new AuthService();
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const isLoading = false;
+
+  const [loginQuery, response] = useLoginQueryMutation();
+  const dispatch = useDispatch();
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
 
     const username = data.get('username') as string;
     const password = data.get('password') as string;
+    try {
+      const result = await loginQuery({ username, password }).unwrap();
 
-    await authService.login(username, password);
-  };
+      dispatch(login(result));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  useEffect(() => {}, [response]);
 
   return (
     <Container component="main" maxWidth="xs" className={'login-page'}>
@@ -62,7 +82,7 @@ export default function Login() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <StyledLink to="/sign-up">You dont have an account? Sign up</StyledLink>
+              <StyledLink to={UrlConstant.SIGN_UP}>You dont have an account? Sign up</StyledLink>
             </Grid>
           </Grid>
         </Box>

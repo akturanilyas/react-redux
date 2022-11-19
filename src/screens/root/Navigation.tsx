@@ -8,7 +8,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { defaultConstant } from '../../constants/defaultConstant';
+import { DefaultConstant } from '../../constants/defaultConstant';
 
 interface NavigationProps {
   window?: () => Window;
@@ -45,13 +45,13 @@ export default function Navigation(props: NavigationProps) {
   );
 
   return (
-    <Box sx={{ width: { sm: defaultConstant.DRAWER_WIDTH } }} aria-label="mailbox folders">
+    <Box sx={{ width: { sm: DefaultConstant.DRAWER_WIDTH } }} aria-label="mailbox folders">
       {drawer}
       <Drawer
         variant="permanent"
         sx={{
           display: { xs: 'none', sm: 'block' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: defaultConstant.DRAWER_WIDTH },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: DefaultConstant.DRAWER_WIDTH },
         }}
         open
       >

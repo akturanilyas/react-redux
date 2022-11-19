@@ -1,13 +1,13 @@
 import { AxiosResponse } from 'axios';
-import { urlConstant } from '../constants/urlConstant';
-import { actionTypes } from '../enums/actionType';
+import { UrlConstant } from '../constants/urlConstant';
+import { ActionTypes } from '../enums/actionType';
 import { ApiService } from './api';
 
 export class AuthService {
   private apiService = new ApiService();
 
   public async login(username: string, password: string) {
-    const response: AxiosResponse | undefined = await this.apiService.start(actionTypes.POST, urlConstant.LOGIN, {
+    const response: AxiosResponse | undefined = await this.apiService.start(ActionTypes.POST, UrlConstant.LOGIN, {
       username,
       password,
     });
@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   public async signUp(first_name: string, last_name: string, email: string, username: string, password: string) {
-    const response: AxiosResponse | undefined = await this.apiService.start(actionTypes.POST, urlConstant.SIGN_UP, {
+    const response: AxiosResponse | undefined = await this.apiService.start(ActionTypes.POST, UrlConstant.SIGN_UP, {
       first_name,
       last_name,
       username,
@@ -39,7 +39,9 @@ export class AuthService {
   };
 
   public getToken = async () => {
-    await localStorage.getItem('auth-token');
+    const token = await localStorage.getItem('auth-token');
+
+    return token;
   };
 
   public setToken = async (token: string) => {

@@ -1,5 +1,5 @@
 /* eslint-disable */
-export enum actionTypes {
+export enum ActionTypes {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',

@@ -8,23 +8,34 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
-import { AuthService } from '../../api/authService';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UrlConstant } from '../../constants/urlConstant';
+import { useRegisterQueryMutation } from '../../services/auth';
 
 export default function SignUp() {
-  const authService = new AuthService();
+  const [registerQuery, response] = useRegisterQueryMutation();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const firstName = data.get('firstName') as string;
-    const lastName = data.get('lastName') as string;
-    const email = data.get('email') as string;
-    const username = data.get('username') as string;
-    const password = data.get('password') as string;
+    const formData = {
+      first_name: data.get('firstName') as string,
+      last_name: data.get('lastName') as string,
+      email: data.get('email') as string,
+      username: data.get('username') as string,
+      password: data.get('password') as string,
+    };
 
-    await authService.signUp(firstName, lastName, email, username, password);
+    await registerQuery(formData);
   };
+
+  useEffect(() => {
+    if (response.isSuccess) {
+      navigate(UrlConstant.LOGIN);
+    }
+  }, [response]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -89,7 +100,7 @@ export default function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link to="/login">Already have an account? Sign in</Link>
+              <Link to={UrlConstant.LOGIN}>Already have an account? Sign in</Link>
             </Grid>
           </Grid>
         </Box>

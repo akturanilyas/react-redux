@@ -1,5 +1,5 @@
 /* eslint-disable */
-export enum messageDirection {
+export enum MessageDirection {
   INBOUND = 'inbound',
   OUTBOUND = 'outbound',
 }
