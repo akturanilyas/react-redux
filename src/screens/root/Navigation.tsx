@@ -35,7 +35,7 @@ export default function Navigation(props: NavigationProps) {
           }}
           disablePadding
         >
-          <ListItemButton>
+          <ListItemButton key={item.toString()}>
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={item.title as string} />
           </ListItemButton>

@@ -9,39 +9,52 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { AuthService } from '../../api/authService';
 import { StyledLink } from '../../components/styled-link/styledLink';
 import { UrlConstant } from '../../constants/urlConstant';
-import { login } from '../../features/auth/authSlice';
+import { login, selectIsAuthorized } from '../../features/auth/authSlice';
 import { useLoginQueryMutation } from '../../services/auth';
 
 export default function Login() {
-  const isLoading = false;
-
   const [loginQuery, response] = useLoginQueryMutation();
+  const service = new AuthService();
+  const token = service.getToken();
   const dispatch = useDispatch();
+  // @ts-ignore
+  const isAuthorized = useSelector(selectIsAuthorized);
+  const navigate = useNavigate();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     const data = new FormData(event.currentTarget);
 
     const username = data.get('username') as string;
     const password = data.get('password') as string;
     try {
-      const result = await loginQuery({ username, password }).unwrap();
-
-      dispatch(login(result));
+      await loginQuery({ username, password }).unwrap();
     } catch (e) {
       console.log(e);
     }
   }
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    if (response.isSuccess) {
+      dispatch(login(response.data));
+    }
+  }, [response]);
 
-  useEffect(() => {}, [response]);
+  useEffect(() => {
+    console.log(token);
+    if (null !== token) {
+      dispatch(login({ token }));
+    }
+
+    if (isAuthorized) {
+      navigate('/');
+    }
+  }, [isAuthorized]);
 
   return (
     <Container component="main" maxWidth="xs" className={'login-page'}>

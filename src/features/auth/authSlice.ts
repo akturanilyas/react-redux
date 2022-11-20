@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthService } from '../../api/authService';
+import { RootState } from '../../app/store';
 
 export interface AuthState {
   isAuthorized: boolean;
@@ -8,11 +8,9 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  isAuthorized: true,
+  isAuthorized: false,
   token: null,
 };
-
-const authService = new AuthService();
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -30,5 +28,8 @@ export const authSlice = createSlice({
 });
 
 export const { login, logout, signIn } = authSlice.actions;
+
+export const selectToken = (state: RootState) => state.auth.token;
+export const selectIsAuthorized = (state: RootState) => state.auth.isAuthorized;
 
 export default authSlice.reducer;

@@ -39,12 +39,12 @@ export class AuthService {
   };
 
   public getToken = async () => {
-    const token = await localStorage.getItem('auth-token');
+    const token = await localStorage.getItem('token');
 
     return token;
   };
 
   public setToken = async (token: string) => {
-    await localStorage.setItem('auth-token', token);
+    await localStorage.setItem('token', token);
   };
 }
