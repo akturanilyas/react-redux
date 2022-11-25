@@ -132,3 +132,4 @@ dist
 # Ide files
 /.idea
 .git/info/exclude
+.idea
