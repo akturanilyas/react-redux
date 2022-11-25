@@ -4,12 +4,14 @@ import authReducer from '../features/auth/authSlice';
 import counterReducer from '../features/counter/counterSlice';
 import { rtkQueryErrorLogger } from '../features/errorMiddleware';
 import { authApi } from '../services/auth';
+import { userApi } from '../services/user';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     auth: authReducer,
     [authApi.reducerPath]: authApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -17,6 +17,7 @@ module.exports = {
     'import/no-import-module-exports': 0,
     'no-shadow': 'off',
     'linebreak-style': 0,
+    'function-paren-newline': 0,
     'no-confusing-arrow': 0,
     'import/extensions': 'off',
     'import/prefer-default-export': 0,
