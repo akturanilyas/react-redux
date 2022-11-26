@@ -7,13 +7,14 @@ import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectChatUsers, setChatUsers } from '../../features/user/userSlice';
+import { User } from '../../api/models';
 import { useChatUsersQuery } from '../../api/user';
+import { selectChatUsers, setChatUsers } from '../../features/user/userSlice';
 
 export default function PeopleListPopup() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const dispatch = useDispatch();
-  const chatUsers: [] = useSelector(selectChatUsers) as [];
+  const chatUsers: User[] = useSelector(selectChatUsers) as [];
   const { data, isLoading } = useChatUsersQuery({});
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -28,6 +29,10 @@ export default function PeopleListPopup() {
   }, [isLoading]);
 
   console.log(chatUsers);
+
+  const openChat = () => {
+
+  };
 
   return (
     <React.Fragment>
@@ -83,11 +88,11 @@ export default function PeopleListPopup() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {chatUsers.map(() => {
+        {chatUsers.map((user: User) => {
           return (
             <>
-              <MenuItem>
-                <Avatar /> Profile
+              <MenuItem value={user.id} onClick={() => openChat()}>
+                <Avatar/> {user.username}
               </MenuItem>
             </>
           );
