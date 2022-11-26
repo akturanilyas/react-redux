@@ -1,3 +1,4 @@
+import { LinearProgress } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -6,9 +7,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import * as React from 'react';
 import { Col } from 'react-bootstrap';
+import { useChatsQuery } from '../../api/chat';
 import PeopleListPopup from '../people-list-popup/PeopleListPopup';
 
 export default function ChatList() {
+  const { data: chats, isLoading } = useChatsQuery({});
+
   return (
     <>
       <List
@@ -18,23 +22,28 @@ export default function ChatList() {
         <ListItem style={{ direction: 'rtl' }}>
           <PeopleListPopup />
         </ListItem>
-        {[0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 3].map((value) => {
-          const labelId = `checkbox-list-secondary-label-${value}`;
+        {isLoading ? (
+          <LinearProgress color="success" />
+        ) : (
+          chats.map((value: React.Key | null | undefined) => {
+            const labelId = `checkbox-list-secondary-label-${value}`;
+            console.log(value);
 
-          return (
-            <ListItem key={value} disablePadding>
-              <ListItemButton>
-                <ListItemAvatar>
-                  <Avatar alt={`Avatar n°${value + 1}`} src={`/static/images/avatar/${value + 1}.jpg`} />
-                </ListItemAvatar>
-                <Col>
-                  <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
-                  <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
-                </Col>
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
+            return (
+              <ListItem key={value} disablePadding>
+                <ListItemButton>
+                  <ListItemAvatar>
+                    <Avatar alt="" src={''} />
+                  </ListItemAvatar>
+                  <Col>
+                    <ListItemText id={labelId} primary={'Line item '} />
+                    <ListItemText id={labelId} primary={'Line item '} />
+                  </Col>
+                </ListItemButton>
+              </ListItem>
+            );
+          })
+        )}
       </List>
     </>
   );

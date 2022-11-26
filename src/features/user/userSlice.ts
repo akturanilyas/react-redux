@@ -1,34 +1,27 @@
 /* eslint-ignore */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
-export interface AuthState {
-  isAuthorized: boolean;
-  token: string | null;
+export interface UserState {
+  chatUsers: object;
 }
 
-const initialState: AuthState = {
-  isAuthorized: false,
-  token: null,
+const initialState: UserState = {
+  chatUsers: [],
 };
 
 export const userSlice = createSlice({
-  name: 'auth',
+  name: 'user',
   initialState,
   reducers: {
-    login: (state, action) => {
-      state.token = action.payload.token;
-      state.isAuthorized = true;
-    },
-    logout: (state) => {
-      console.log(state);
+    setChatUsers: (state, action) => {
+      state.chatUsers = action.payload;
     },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { setChatUsers } = userSlice.actions;
 
-export const selectToken = (state: RootState) => state.auth.token;
-export const selectIsAuthorized = (state: RootState) => state.auth.isAuthorized;
+export const selectChatUsers = (state: RootState) => state.user.chatUsers;
 
 export default userSlice.reducer;

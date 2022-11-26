@@ -1,23 +1,29 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { authApi } from '../api/auth';
+import { chatApi } from '../api/chat';
+import { userApi } from '../api/user';
 import authReducer from '../features/auth/authSlice';
 import counterReducer from '../features/counter/counterSlice';
 import { rtkQueryErrorLogger } from '../features/errorMiddleware';
-import { authApi } from '../services/auth';
-import { userApi } from '../services/user';
+import userReducer from '../features/user/userSlice';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     auth: authReducer,
+    user: userReducer,
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [chatApi.reducerPath]: chatApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     })
       .concat(authApi.middleware)
+      .concat(userApi.middleware)
+      .concat(chatApi.middleware)
       .concat(rtkQueryErrorLogger),
   devTools: true,
 });

@@ -9,7 +9,11 @@ import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
+import { AuthService } from '../../services/authService';
+import { login } from '../../features/auth/authSlice';
 import Chat from '../chat/Chat';
 import Navigation from './Navigation';
 
@@ -40,6 +44,15 @@ const AppBar = styled(MuiAppBar, {
 const mdTheme = createTheme();
 
 export default function Root() {
+  const authService = new AuthService();
+  const dispatch = useDispatch();
+  const setAuthorizeStatus = async () => {
+    const token = await authService.getToken();
+    if (token) {
+      dispatch(login(token));
+    }
+  };
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -65,6 +78,10 @@ export default function Root() {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  useEffect(() => {
+    setAuthorizeStatus();
+  }, []);
 
   return (
     <ThemeProvider theme={mdTheme}>

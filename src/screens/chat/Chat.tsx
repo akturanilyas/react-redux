@@ -5,7 +5,7 @@ export default function Chat() {
   return (
     <div className={'row h-100 mh-100'}>
       <ChatList />
-      <div className="col bg-dark">
+      <div className="col">
         <MessageBox />
       </div>
     </div>

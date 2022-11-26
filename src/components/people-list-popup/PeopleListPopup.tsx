@@ -6,12 +6,15 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { useGetChatUsersMutation } from '../../services/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectChatUsers, setChatUsers } from '../../features/user/userSlice';
+import { useChatUsersQuery } from '../../api/user';
 
 export default function PeopleListPopup() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const [getChatUsers, response] = useGetChatUsersMutation();
+  const dispatch = useDispatch();
+  const chatUsers: [] = useSelector(selectChatUsers) as [];
+  const { data, isLoading } = useChatUsersQuery({});
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -20,14 +23,11 @@ export default function PeopleListPopup() {
     setAnchorEl(null);
   };
 
-  const fetchChatUsers = async () => {
-    await getChatUsers({}).unwrap();
-    console.log(response);
-  };
-
   useEffect(() => {
-    fetchChatUsers();
-  }, []);
+    if (!isLoading) dispatch(setChatUsers(data));
+  }, [isLoading]);
+
+  console.log(chatUsers);
 
   return (
     <React.Fragment>
@@ -83,48 +83,15 @@ export default function PeopleListPopup() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
+        {chatUsers.map(() => {
+          return (
+            <>
+              <MenuItem>
+                <Avatar /> Profile
+              </MenuItem>
+            </>
+          );
+        })}
       </Menu>
     </React.Fragment>
   );

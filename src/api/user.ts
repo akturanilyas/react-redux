@@ -1,13 +1,14 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseQuery } from './api';
 import { BackendUrlConstant } from '../constants/backendUrlConstant';
 import { ActionTypes } from '../enums/actionType';
 
 export const userApi = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BACKEND_URL }),
+  baseQuery,
   tagTypes: ['user'],
   endpoints: (builder) => ({
-    getChatUsers: builder.mutation({
+    chatUsers: builder.query({
       query: () => ({
         url: BackendUrlConstant.GET_CHAT_USERS,
         method: ActionTypes.GET,
@@ -16,4 +17,4 @@ export const userApi = createApi({
   }),
 });
 
-export const { useGetChatUsersMutation } = userApi;
+export const { useChatUsersQuery } = userApi;

@@ -11,7 +11,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UrlConstant } from '../../constants/urlConstant';
-import { useRegisterQueryMutation } from '../../services/auth';
+import { useRegisterQueryMutation } from '../../api/auth';
 
 export default function SignUp() {
   const [registerQuery, response] = useRegisterQueryMutation();
