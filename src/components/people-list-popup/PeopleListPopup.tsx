@@ -7,12 +7,14 @@ import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMessagesMutation } from '../../api/message';
 import { User } from '../../api/models';
 import { useChatUsersQuery } from '../../api/user';
 import { selectChatUsers, setChatUsers } from '../../features/user/userSlice';
 
 export default function PeopleListPopup() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [messagesQuery, messagesResponse] = useMessagesMutation();
   const dispatch = useDispatch();
   const chatUsers: User[] = useSelector(selectChatUsers) as [];
   const { data, isLoading } = useChatUsersQuery({});
@@ -28,11 +30,11 @@ export default function PeopleListPopup() {
     if (!isLoading) dispatch(setChatUsers(data));
   }, [isLoading]);
 
-  console.log(chatUsers);
-
-  const openChat = () => {
-
-  };
+  useEffect(() => {
+    if (messagesResponse.isSuccess) {
+      // dispatch(setMessages(messages));
+    }
+  }, [messagesResponse]);
 
   return (
     <React.Fragment>
@@ -90,11 +92,9 @@ export default function PeopleListPopup() {
       >
         {chatUsers.map((user: User) => {
           return (
-            <>
-              <MenuItem value={user.id} onClick={() => openChat()}>
-                <Avatar/> {user.username}
-              </MenuItem>
-            </>
+            <MenuItem value={user.id} onClick={() => messagesQuery(user.id)}>
+              <Avatar /> {user.username}
+            </MenuItem>
           );
         })}
       </Menu>

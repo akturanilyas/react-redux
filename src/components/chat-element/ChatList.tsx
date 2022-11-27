@@ -18,7 +18,7 @@ interface ChatListProps {
 }
 
 export default function ChatList(props: ChatListProps) {
-  const { data: chats, isLoading } = useChatsQuery({});
+  const { data: chats, isLoading } = useChatsQuery();
   const { setChatId } = props;
 
   return (
@@ -28,21 +28,21 @@ export default function ChatList(props: ChatListProps) {
         sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', overflow: 'auto', maxHeight: '100%' }}
       >
         <ListItem style={{ direction: 'rtl' }}>
-          <PeopleListPopup/>
+          <PeopleListPopup />
         </ListItem>
         {isLoading ? (
-          <LinearProgress color="success"/>
+          <LinearProgress color="success" />
         ) : (
-          chats.map((chat: Chat) => {
+          chats?.map((chat: Chat) => {
             return (
               <ListItem key={chat.id} disablePadding>
-                <ListItemButton onClick={() => (setChatId(chat.id))}>
+                <ListItemButton onClick={() => setChatId(chat.id)}>
                   <ListItemAvatar>
-                    <Avatar alt="" src={''}/>
+                    <Avatar alt="" src={''} />
                   </ListItemAvatar>
                   <Col>
-                    <ListItemText id={chat.id.toString()} primary={'Line item '}/>
-                    <ListItemText id={chat.id.toString()} primary={'Line item '}/>
+                    <ListItemText id={chat.id.toString()} primary={'Line item '} />
+                    <ListItemText id={chat.id.toString()} primary={'Line item '} />
                   </Col>
                 </ListItemButton>
               </ListItem>

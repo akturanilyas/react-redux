@@ -5,7 +5,13 @@ import { Message } from '../message/Message';
 
 const textFieldHeight = 100;
 
-export const MessageBox = () => {
+interface MessageBoxProps {
+  currentChatId: number | null;
+}
+
+export const MessageBox = (props: MessageBoxProps) => {
+  const { currentChatId } = props;
+
   const sendMessage = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if ('Enter' === e.key) {
       console.log();
@@ -18,6 +24,7 @@ export const MessageBox = () => {
         <div className="col-12" style={{ height: `calc(100% - ${textFieldHeight}px)` }}>
           <div className="row">
             <div className="row">
+              asasas:{currentChatId}
               <Message text={'jamsdkamsd'} userName={'username'} direction={'inbound'} time={getTimeNow()} />
             </div>
             <div className="row" style={{ direction: 'rtl' }}>

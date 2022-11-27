@@ -18,3 +18,13 @@ export interface Chat {
   deleted_at: Date;
   type?: string;
 }
+
+export interface Message {
+  id: number;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date;
+  sender_id: number;
+  chat_id: number;
+  message: string;
+}
