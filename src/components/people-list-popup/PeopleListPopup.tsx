@@ -5,16 +5,22 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
-import { useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMessagesMutation } from '../../api/message';
+import { useGetUserChatMutation } from '../../api/chat/chat';
 import { User } from '../../api/models';
 import { useChatUsersQuery } from '../../api/user';
 import { selectChatUsers, setChatUsers } from '../../features/user/userSlice';
 
-export default function PeopleListPopup() {
+interface PeopleListPopupProps {
+  setChatId: Dispatch<SetStateAction<number | null>>;
+  chatId: number;
+}
+
+export default function PeopleListPopup(props: PeopleListPopupProps) {
+  const { setChatId } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [messagesQuery, messagesResponse] = useMessagesMutation();
+  const [getUserChatQuery, getUserChatResponse] = useGetUserChatMutation();
   const dispatch = useDispatch();
   const chatUsers: User[] = useSelector(selectChatUsers) as [];
   const { data, isLoading } = useChatUsersQuery({});
@@ -31,10 +37,13 @@ export default function PeopleListPopup() {
   }, [isLoading]);
 
   useEffect(() => {
-    if (messagesResponse.isSuccess) {
-      // dispatch(setMessages(messages));
-    }
-  }, [messagesResponse]);
+    // getUserChatQuery();
+  }, [getUserChatResponse]);
+
+  const openChat = async (userId: number) => {
+    setChatId(userId);
+    getUserChatQuery({ user_id: userId });
+  };
 
   return (
     <React.Fragment>
@@ -92,7 +101,7 @@ export default function PeopleListPopup() {
       >
         {chatUsers.map((user: User) => {
           return (
-            <MenuItem value={user.id} onClick={() => messagesQuery(user.id)}>
+            <MenuItem value={user.id} onClick={() => openChat(user.id)}>
               <Avatar /> {user.username}
             </MenuItem>
           );

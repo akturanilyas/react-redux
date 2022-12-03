@@ -1,7 +1,7 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { authApi } from '../api/auth';
-import { chatApi } from '../api/chat';
+import { chatApi } from '../api/chat/chat';
 import { messageApi } from '../api/message';
 import { userApi } from '../api/user';
 import authReducer from '../features/auth/authSlice';
@@ -15,7 +15,7 @@ export const store = configureStore({
     counter: counterReducer,
     auth: authReducer,
     user: userReducer,
-    messages: messageReducer,
+    message: messageReducer,
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [chatApi.reducerPath]: chatApi.reducer,

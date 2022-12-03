@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Message } from '../../api/models';
 import { RootState } from '../../app/store';
 
 export interface MessageState {
-  chatUsers: object;
+  messages: Message[];
 }
 
 const initialState: MessageState = {
-  chatUsers: [],
+  messages: [],
 };
 
 export const messageSlice = createSlice({
@@ -14,13 +15,13 @@ export const messageSlice = createSlice({
   initialState,
   reducers: {
     setMessages: (state, action) => {
-      state.chatUsers = action.payload;
+      state.messages = action.payload;
     },
   },
 });
 
 export const { setMessages } = messageSlice.actions;
 
-export const selectMessages = (state: RootState) => state.messages.chatUsers;
+export const selectMessages = (state: RootState) => state.message.messages;
 
 export default messageSlice.reducer;

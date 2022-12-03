@@ -3,7 +3,8 @@ export const BackendUrlConstant = {
   REGISTER: 'api/auth/register',
   GET_CHAT_USERS: '/api/chat-users',
   GET_CHATS: '/api/chats',
-  GET_MESSAGES: '/api/chats/{chatId}/messages',
+  GET_MESSAGES: '/api/chats/{chat_id}/messages',
+  GET_CHAT_BY_USER: '/api/user/{user_id}/chat',
 };
 
 export const urlBuilder = (url: string, params: {}) => {

@@ -8,7 +8,7 @@ import ListItemText from '@mui/material/ListItemText';
 import * as React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { Col } from 'react-bootstrap';
-import { useChatsQuery } from '../../api/chat';
+import { useChatsQuery } from '../../api/chat/chat';
 import { Chat } from '../../api/models';
 import PeopleListPopup from '../people-list-popup/PeopleListPopup';
 
@@ -19,37 +19,32 @@ interface ChatListProps {
 
 export default function ChatList(props: ChatListProps) {
   const { data: chats, isLoading } = useChatsQuery();
-  const { setChatId } = props;
+  const { setChatId, currentChatId } = props;
 
   return (
-    <>
-      <List
-        dense
-        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', overflow: 'auto', maxHeight: '100%' }}
-      >
-        <ListItem style={{ direction: 'rtl' }}>
-          <PeopleListPopup />
-        </ListItem>
-        {isLoading ? (
-          <LinearProgress color="success" />
-        ) : (
-          chats?.map((chat: Chat) => {
-            return (
-              <ListItem key={chat.id} disablePadding>
-                <ListItemButton onClick={() => setChatId(chat.id)}>
-                  <ListItemAvatar>
-                    <Avatar alt="" src={''} />
-                  </ListItemAvatar>
-                  <Col>
-                    <ListItemText id={chat.id.toString()} primary={'Line item '} />
-                    <ListItemText id={chat.id.toString()} primary={'Line item '} />
-                  </Col>
-                </ListItemButton>
-              </ListItem>
-            );
-          })
-        )}
-      </List>
-    </>
+    <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', overflow: 'auto', maxHeight: '100%' }}>
+      <ListItem style={{ direction: 'rtl' }}>
+        <PeopleListPopup setChatId={setChatId} chatId={currentChatId ?? 0} />
+      </ListItem>
+      {isLoading ? (
+        <LinearProgress color="success" />
+      ) : (
+        chats?.map((chat: Chat) => {
+          return (
+            <ListItem key={chat.id} disablePadding>
+              <ListItemButton onClick={() => setChatId(chat.id)}>
+                <ListItemAvatar>
+                  <Avatar alt="" src={''} />
+                </ListItemAvatar>
+                <Col>
+                  <ListItemText id={chat.id.toString()} primary={'Line item '} />
+                  <ListItemText id={chat.id.toString()} primary={'Line item '} />
+                </Col>
+              </ListItemButton>
+            </ListItem>
+          );
+        })
+      )}
+    </List>
   );
 }
