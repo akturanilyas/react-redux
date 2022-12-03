@@ -3,7 +3,7 @@ import { RootState } from '../app/store';
 import { AuthService } from '../services/authService';
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.REACT_APP_BACKEND_URL,
+  baseUrl: process.env.REACT_APP_API_URL,
   prepareHeaders: async (headers, { getState }) => {
     let { token } = (getState() as RootState).auth;
     const authService = new AuthService();

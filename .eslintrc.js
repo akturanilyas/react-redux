@@ -4,6 +4,7 @@ module.exports = {
     es2021: true,
     'jest/globals': true,
   },
+  ignorePatterns: ['src/enums/*'],
   extends: ['airbnb-base', 'plugin:jest/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {

@@ -6,7 +6,7 @@ import { ActionTypes } from '../enums/actionType';
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BACKEND_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_API_URL }),
   tagTypes: ['login'],
   endpoints: (builder) => ({
     loginQuery: builder.mutation({

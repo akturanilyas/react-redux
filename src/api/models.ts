@@ -27,4 +27,6 @@ export interface Message {
   sender_id: number;
   chat_id: number;
   message: string;
+  sender: User;
+  direction: string;
 }

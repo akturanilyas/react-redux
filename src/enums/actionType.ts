@@ -1,4 +1,3 @@
-/* eslint-disable */
 export enum ActionTypes {
   GET = 'GET',
   POST = 'POST',

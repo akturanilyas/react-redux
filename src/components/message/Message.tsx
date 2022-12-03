@@ -1,7 +1,7 @@
 interface MessageProps {
   userName: string;
   text: string;
-  time: string;
+  time: Date;
   direction: string;
 }
 
@@ -16,7 +16,7 @@ export const Message = (props: MessageProps) => {
           <span>{props.text}</span>
         </div>
         <div className="row">
-          <span>{props.time}</span>
+          <span>{props.time.toString()}</span>
         </div>
       </div>
     </>
