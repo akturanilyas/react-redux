@@ -4,6 +4,7 @@ import { io, Socket } from 'socket.io-client';
 import { BackendUrlConstant, urlBuilder } from '../constants/backendUrlConstant';
 import { ActionTypes } from '../enums/actionType';
 import { ChatEvent } from '../enums/chatEvent';
+import { AuthService } from '../services/authService';
 import { baseQuery } from './api';
 import { Message } from './models';
 
@@ -13,11 +14,14 @@ const messagesAdapter = createEntityAdapter<Message>();
 
 let socket: Socket;
 
-function getSocket() {
+async function getSocket() {
   if (!socket) {
     socket = io(process.env.REACT_APP_API_URL as string, {
       withCredentials: true,
-     transports: ['websocket'],
+      transports: ['websocket'],
+      auth: {
+        token: await AuthService.getToken(),
+      },
     });
   }
 
@@ -31,7 +35,7 @@ export const messageApi = createApi({
   endpoints: (builder) => ({
     messages: builder.mutation<Message[], number>({
       query: (chatId: number) => ({
-        url: urlBuilder(BackendUrlConstant.GET_MESSAGES, { chatId }),
+        url: urlBuilder(BackendUrlConstant.GET_MESSAGES, { chat_id: chatId }),
         method: ActionTypes.GET,
       }),
     }),
@@ -62,12 +66,12 @@ export const messageApi = createApi({
         ws.close();
       },
     }),
-    sendMessage: builder.mutation<Message, string>({
-      queryFn: (chatMessageContent: string) => {
-        const socket = getSocket();
+    sendMessage: builder.mutation<Message, any>({
+      queryFn: async ({ currentChatId: targetId, currentChatType: targetType, text }) => {
+        const socket = await getSocket();
 
         return new Promise((resolve) => {
-          socket.emit(ChatEvent.SEND_MESSAGE, chatMessageContent, (message: Message) => {
+          socket.emit(ChatEvent.SEND_MESSAGE, { targetId, targetType, text }, (message: Message) => {
             resolve({ data: message });
           });
         });

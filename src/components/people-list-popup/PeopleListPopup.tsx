@@ -5,26 +5,25 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetUserChatMutation } from '../../api/chat/chat';
+import { useGetChatIdMutation, useGetUserChatMutation } from '../../api/chat/chat';
 import { User } from '../../api/models';
 import { useChatUsersQuery } from '../../api/user';
+import { useAppSelector } from '../../app/hooks';
+import { selectTargetId, setChatState } from '../../features/chat/chatSlice';
 import { selectChatUsers, setChatUsers } from '../../features/user/userSlice';
 
-interface PeopleListPopupProps {
-  setChatId: Dispatch<SetStateAction<number | null>>;
-  chatId: number;
-}
-
-export default function PeopleListPopup(props: PeopleListPopupProps) {
-  const { setChatId } = props;
+export default function PeopleListPopup() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [getUserChatQuery, getUserChatResponse] = useGetUserChatMutation();
+  const targetId = useAppSelector(selectTargetId);
+  const [getChatIdQuery, { data: chatIdResponse, isLoading: getChatIdIsLoading }] = useGetChatIdMutation();
   const dispatch = useDispatch();
   const chatUsers: User[] = useSelector(selectChatUsers) as [];
   const { data, isLoading } = useChatUsersQuery({});
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -40,9 +39,16 @@ export default function PeopleListPopup(props: PeopleListPopupProps) {
     // getUserChatQuery();
   }, [getUserChatResponse]);
 
-  const openChat = async (userId: number) => {
-    setChatId(userId);
-    getUserChatQuery({ user_id: userId });
+  useEffect(() => {
+    if (!getChatIdIsLoading) {
+      dispatch(setChatState({ chatId: chatIdResponse, targetType: 'user' }));
+      getUserChatQuery({ user_id: targetId ?? 0 });
+    }
+  }, [getChatIdIsLoading]);
+
+  const openChat = async (targetId: number) => {
+    dispatch(setChatState({ target_id: targetId, targetType: 'user' }));
+    getChatIdQuery({ target_id: targetId, target_type: 'user' });
   };
 
   return (

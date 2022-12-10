@@ -19,6 +19,20 @@ export interface Chat {
   type?: string;
 }
 
+export interface ChatUser {
+  id: number;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date;
+  type?: string;
+  user: User;
+  target: User;
+  chat_id: number;
+  target_id: number;
+  target_type: string;
+}
+
+
 export interface Message {
   id: number;
   created_at: Date;
@@ -26,7 +40,7 @@ export interface Message {
   deleted_at: Date;
   sender_id: number;
   chat_id: number;
-  message: string;
+  text: string;
   sender: User;
   direction: string;
 }

@@ -2,15 +2,15 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { BackendUrlConstant, urlBuilder } from '../../constants/backendUrlConstant';
 import { ActionTypes } from '../../enums/actionType';
 import { baseQuery } from '../api';
-import { getChatByUser } from './chatInterface';
-import { Chat } from '../models';
+import { Chat, ChatUser } from '../models';
+import { getChatByUser, getChatId } from './chatInterface';
 
 export const chatApi = createApi({
   reducerPath: 'chat',
   baseQuery,
   tagTypes: ['Chat'],
   endpoints: (builder) => ({
-    chats: builder.query<Chat[], void>({
+    chats: builder.query<ChatUser[], void>({
       query: () => ({
         url: BackendUrlConstant.GET_CHATS,
         method: ActionTypes.GET,
@@ -28,7 +28,14 @@ export const chatApi = createApi({
         method: ActionTypes.GET,
       }),
     }),
+    getChatId: builder.mutation<number, getChatId>({
+      query: ({ target_id, target_type }) => ({
+        url: BackendUrlConstant.GET_CHAT_ID,
+        method: ActionTypes.GET,
+        params: { target_id, target_type },
+      }),
+    }),
   }),
 });
 
-export const { useChatsQuery, useChatQuery, useGetUserChatMutation } = chatApi;
+export const { useChatsQuery, useChatQuery, useGetChatIdMutation, useGetUserChatMutation } = chatApi;

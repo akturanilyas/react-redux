@@ -9,12 +9,14 @@ import counterReducer from '../features/counter/counterSlice';
 import { rtkQueryErrorLogger } from '../features/errorMiddleware';
 import userReducer from '../features/user/userSlice';
 import messageReducer from '../features/message/messageSlice';
+import chatReducer from '../features/chat/chatSlice';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     auth: authReducer,
     user: userReducer,
+    chatState: chatReducer,
     message: messageReducer,
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,

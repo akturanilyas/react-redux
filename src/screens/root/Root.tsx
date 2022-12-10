@@ -44,10 +44,9 @@ const AppBar = styled(MuiAppBar, {
 const mdTheme = createTheme();
 
 export default function Root() {
-  const authService = new AuthService();
   const dispatch = useDispatch();
   const setAuthorizeStatus = async () => {
-    const token = await authService.getToken();
+    const token = await AuthService.getToken();
     if (token) {
       dispatch(login(token));
     }

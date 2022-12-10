@@ -1,28 +1,28 @@
 import { TextField } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { useSendMessageMutation } from '../../api/message';
 import { useAppSelector } from '../../app/hooks';
+import { selectTargetId, selectTargetType } from '../../features/chat/chatSlice';
 import { selectMessages } from '../../features/message/messageSlice';
 import { Message } from '../message/Message';
 
 const textFieldHeight = 100;
 
-interface MessageBoxProps {
-  currentChatId: number | null;
-}
-
-export const MessageBox = (props: MessageBoxProps) => {
-  const { currentChatId } = props;
-
+export const MessageBox = () => {
+  const [text, setText] = useState('');
   const messages = useAppSelector(selectMessages);
-
+  const targetId = useAppSelector(selectTargetId);
+  const targetType = useAppSelector(selectTargetType);
   const [sendMessage] = useSendMessageMutation();
 
   const send = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if ('Enter' === e.key) {
-      sendMessage('sadsdasd');
-      console.log(currentChatId);
+      sendMessage({ text, targetId, targetType });
     }
+  };
+
+  const changeText = (event: any) => {
+    setText(event.target.value);
   };
 
   return (
@@ -30,18 +30,27 @@ export const MessageBox = (props: MessageBoxProps) => {
       <div className="container h-100 border-2 row m-0">
         <div className="col-12" style={{ height: `calc(100% - ${textFieldHeight}px)` }}>
           <div className="row">
-            {messages.map((message) => {
-              return (<div className="row">
-                <Message key={message.id}
-                         text={message.message} userName={message.sender.username}
-                         direction={message.direction}
-                         time={message.created_at}/>
-              </div>);
-            })}
+            {!messages?.length ? (
+              <h1>Mesaj yok</h1>
+            ) : (
+              messages.map((message) => {
+                return (
+                  <div className="row">
+                    <Message
+                      key={message.id}
+                      text={message.text}
+                      userName={message.sender?.username ?? 'username'}
+                      direction={message.direction}
+                      time={message.created_at}
+                    />
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
         <div className="col-12 row" style={{ height: textFieldHeight }}>
-          <TextField className={'p-0 w-100'} onKeyDown={send}/>
+          <TextField className={'p-0 w-100'} onKeyDown={send} onChange={changeText} />
         </div>
       </div>
     </>

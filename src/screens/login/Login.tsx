@@ -19,7 +19,6 @@ import { useLoginQueryMutation } from '../../api/auth';
 
 export default function Login() {
   const [loginQuery, response] = useLoginQueryMutation();
-  const service = new AuthService();
   const dispatch = useDispatch();
   const isAuthorized = useSelector(selectIsAuthorized);
   const navigate = useNavigate();
@@ -39,7 +38,7 @@ export default function Login() {
 
   useEffect(() => {
     if (response.isSuccess) {
-      service.setToken(response.data.token).then(() => {
+      AuthService.setToken(response.data.token).then(() => {
         dispatch(login(response.data.token));
       });
     }
@@ -47,7 +46,7 @@ export default function Login() {
 
   useEffect(() => {
     const getToken = async () => {
-      const data = await service.getToken();
+      const data = await AuthService.getToken();
 
       if (null !== data) {
         dispatch(login({ data }));
