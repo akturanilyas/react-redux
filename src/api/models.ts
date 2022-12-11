@@ -32,7 +32,6 @@ export interface ChatUser {
   target_type: string;
 }
 
-
 export interface Message {
   id: number;
   created_at: Date;

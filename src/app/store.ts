@@ -5,11 +5,11 @@ import { chatApi } from '../api/chat/chat';
 import { messageApi } from '../api/message';
 import { userApi } from '../api/user';
 import authReducer from '../features/auth/authSlice';
+import chatReducer from '../features/chat/chatSlice';
 import counterReducer from '../features/counter/counterSlice';
 import { rtkQueryErrorLogger } from '../features/errorMiddleware';
-import userReducer from '../features/user/userSlice';
 import messageReducer from '../features/message/messageSlice';
-import chatReducer from '../features/chat/chatSlice';
+import userReducer from '../features/user/userSlice';
 
 export const store = configureStore({
   reducer: {

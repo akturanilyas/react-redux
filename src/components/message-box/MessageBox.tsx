@@ -14,7 +14,6 @@ export const MessageBox = () => {
   const targetId = useAppSelector(selectTargetId);
   const targetType = useAppSelector(selectTargetType);
   const [sendMessage] = useSendMessageMutation();
-
   const send = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if ('Enter' === e.key) {
       sendMessage({ text, targetId, targetType });

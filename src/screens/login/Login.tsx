@@ -11,11 +11,11 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { AuthService } from '../../services/authService';
+import { useLoginQueryMutation } from '../../api/auth';
 import { StyledLink } from '../../components/styled-link/styledLink';
 import { UrlConstant } from '../../constants/urlConstant';
 import { login, selectIsAuthorized } from '../../features/auth/authSlice';
-import { useLoginQueryMutation } from '../../api/auth';
+import { AuthService } from '../../services/authService';
 
 export default function Login() {
   const [loginQuery, response] = useLoginQueryMutation();

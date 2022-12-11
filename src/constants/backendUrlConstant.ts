@@ -1,6 +1,7 @@
 export const BackendUrlConstant = {
   LOGIN: 'api/auth/login',
   REGISTER: 'api/auth/register',
+  ME: 'api/user/me',
   GET_CHAT_USERS: '/api/chat-users',
   GET_CHATS: '/api/chats',
   GET_MESSAGES: '/api/chats/{chat_id}/messages',

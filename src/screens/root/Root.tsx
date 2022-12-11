@@ -12,8 +12,9 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
+import { useMeQuery } from '../../api/auth';
+import { login, me } from '../../features/auth/authSlice';
 import { AuthService } from '../../services/authService';
-import { login } from '../../features/auth/authSlice';
 import Chat from '../chat/Chat';
 import Navigation from './Navigation';
 
@@ -45,6 +46,8 @@ const mdTheme = createTheme();
 
 export default function Root() {
   const dispatch = useDispatch();
+  const { data: meQuery, isLoading } = useMeQuery({});
+
   const setAuthorizeStatus = async () => {
     const token = await AuthService.getToken();
     if (token) {
@@ -81,6 +84,14 @@ export default function Root() {
   useEffect(() => {
     setAuthorizeStatus();
   }, []);
+
+  useEffect(() => {
+    console.log(meQuery);
+    if (!isLoading) {
+      console.log(meQuery.id);
+      dispatch(me(meQuery.id));
+    }
+  }, [isLoading]);
 
   return (
     <ThemeProvider theme={mdTheme}>

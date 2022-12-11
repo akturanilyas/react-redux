@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Message } from '../../api/models';
 import { RootState } from '../../app/store';
 
@@ -17,10 +17,13 @@ export const messageSlice = createSlice({
     setMessages: (state, action) => {
       state.messages = action.payload;
     },
+    addMessage: (state, action: PayloadAction<Message>) => {
+      state.messages.push(action.payload);
+    },
   },
 });
 
-export const { setMessages } = messageSlice.actions;
+export const { setMessages, addMessage } = messageSlice.actions;
 
 export const selectMessages = (state: RootState) => state.message.messages;
 
