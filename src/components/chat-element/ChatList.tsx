@@ -43,8 +43,8 @@ export default function ChatList() {
     if (null !== socket) {
       if (!isConnected && userId) {
         console.log(`messageEmit-${userId}`);
+        setIsConnected(true);
         socket.on(`messageEmit-${userId}`, (response) => {
-          setIsConnected(true);
           console.log(response);
           dispatch(addMessage(response));
         });
