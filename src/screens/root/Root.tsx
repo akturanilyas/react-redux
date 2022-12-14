@@ -86,9 +86,7 @@ export default function Root() {
   }, []);
 
   useEffect(() => {
-    console.log(meQuery);
     if (!isLoading) {
-      console.log(meQuery.id);
       dispatch(me(meQuery.id));
     }
   }, [isLoading]);

@@ -15,7 +15,7 @@ module.exports = {
   rules: {
     indent: 0,
     'no-param-reassign': 0,
-    'no-debugger': 0,
+    'no-debugger': 1,
     'import/no-import-module-exports': 0,
     'no-shadow': 'off',
     'linebreak-style': 0,

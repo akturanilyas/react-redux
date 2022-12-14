@@ -11,12 +11,26 @@ export interface User {
   photo_url?: string;
 }
 
+export interface Message {
+  id: number;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date;
+  sender_id: number;
+  chat_id: number;
+  text: string;
+  sender: User;
+  direction: string;
+}
+
 export interface Chat {
   id: number;
   created_at: Date;
   updated_at: Date;
   deleted_at: Date;
   type?: string;
+  notify_count: number;
+  messages: Message[];
 }
 
 export interface ChatUser {
@@ -30,16 +44,5 @@ export interface ChatUser {
   chat_id: number;
   target_id: number;
   target_type: string;
-}
-
-export interface Message {
-  id: number;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at: Date;
-  sender_id: number;
-  chat_id: number;
-  text: string;
-  sender: User;
-  direction: string;
+  messages: Message[];
 }

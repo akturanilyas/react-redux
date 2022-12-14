@@ -6,7 +6,7 @@ import { Chat, ChatUser } from '../models';
 import { getChatByUser, getChatId } from './chatInterface';
 
 export const chatApi = createApi({
-  reducerPath: 'chat',
+  reducerPath: 'chatApi',
   baseQuery,
   tagTypes: ['Chat'],
   endpoints: (builder) => ({

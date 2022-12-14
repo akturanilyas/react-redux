@@ -11,33 +11,25 @@ import { Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Socket } from 'socket.io-client';
 import { useChatsQuery } from '../../api/chat/chat';
-import { useMessagesMutation } from '../../api/message';
 import { ChatUser } from '../../api/models';
+import { useAppSelector } from '../../app/hooks';
 import { selectUserId } from '../../features/auth/authSlice';
-import { setChatState } from '../../features/chat/chatSlice';
-import { addMessage, setMessages } from '../../features/message/messageSlice';
+import { addChatToMessage, selectChats, setChatState } from '../../features/chat/chatSlice';
 import { getSocket } from '../../services/socketService';
 import PeopleListPopup from '../people-list-popup/PeopleListPopup';
 
 export default function ChatList() {
-  const { data: chats, isLoading } = useChatsQuery();
   const [isConnected, setIsConnected] = useState(false);
-  const userId = useSelector(selectUserId);
+  const { data: chatsData, isLoading } = useChatsQuery();
+  const userId = useAppSelector(selectUserId);
+  const chats = useSelector(selectChats);
   const [socket, setSocket] = useState<null | Socket>(null);
   const dispatch = useDispatch();
 
-  const [messagesQuery, { data: messages, isLoading: messageIsLoading }] = useMessagesMutation();
-  const listItemButtonClicked = (chatId: number, targetId: number, targetType: string) => {
+  const listItemButtonClicked = (e: any, chatId: number, targetId: number, targetType: string) => {
+    e.stopPropagation();
     dispatch(setChatState({ chatId, targetId, targetType }));
-
-    messagesQuery(chatId);
   };
-
-  useEffect(() => {
-    if (!messageIsLoading) {
-      dispatch(setMessages(messages));
-    }
-  }, [messageIsLoading]);
 
   useEffect(() => {
     if (null !== socket) {
@@ -46,7 +38,14 @@ export default function ChatList() {
         setIsConnected(true);
         socket.on(`messageEmit-${userId}`, (response) => {
           console.log(response);
-          dispatch(addMessage(response));
+          console.log(chats);
+          console.log(chats[0].messages);
+          debugger;
+
+          const chat = chats.find((item) => item.chat_id === response.chat_id);
+          chat?.messages.push(response);
+          console.log(chat?.messages);
+          dispatch(addChatToMessage({ chatId: response.chatId, response }));
         });
       } else {
         console.log('not connect');
@@ -64,6 +63,12 @@ export default function ChatList() {
     });
   }, []);
 
+  useEffect(() => {
+    if (!isLoading) {
+      dispatch(setChatState({ chats: chatsData }));
+    }
+  }, [isLoading]);
+
   return (
     <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', overflow: 'auto', maxHeight: '100%' }}>
       <ListItem style={{ direction: 'rtl' }}>
@@ -75,7 +80,7 @@ export default function ChatList() {
         chats?.map((chat: ChatUser) => {
           return (
             <ListItem key={chat.id} disablePadding>
-              <ListItemButton onClick={() => listItemButtonClicked(chat.chat_id, chat.target.id, 'user')}>
+              <ListItemButton onClick={(e) => listItemButtonClicked(e, chat.chat_id, chat.target.id, 'user')}>
                 <ListItemAvatar>
                   <Avatar alt="" src={''} />
                 </ListItemAvatar>
