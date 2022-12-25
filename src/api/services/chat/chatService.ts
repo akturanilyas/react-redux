@@ -1,4 +1,4 @@
-import { BACKEND_URL_CONSTANT, urlBuilder } from '../../../constants/backendUrlConstant';
+import { BACKEND_URL_CONSTANT, urlBuilder } from '../../../constants/backendUrlConstants';
 import { ACTION_TYPE } from '../../../enums/actionType';
 import { setChatId } from '../../../redux/slices/mainSlice';
 import { Chat, ChatUser } from '../../../types/models';

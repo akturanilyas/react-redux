@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import NotFoundImage from '../../assets/images/404.png';
-import { URL_CONSTANT } from '../../constants/URL_CONSTANT';
+import { URL_CONSTANT } from '../../constants/urlConstants';
 import Chat from '../chat/Chat';
 import NotFound from '../not-found/NotFound';
 
@@ -19,7 +19,7 @@ export default function Root() {
       icon: 'icon',
     },
     {
-      url: '*',
+      url: URL_CONSTANT.DEFAULT,
       title: 'title',
       component: <NotFound />,
       icon: 'icon',

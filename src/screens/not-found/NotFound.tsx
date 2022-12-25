@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import NotFoundImage from '../../assets/images/404.png';
-import { URL_CONSTANT } from '../../constants/URL_CONSTANT';
+import { URL_CONSTANT } from '../../constants/urlConstants';
 
 export default function NotFound() {
   const navigate = useNavigate();

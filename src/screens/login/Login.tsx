@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useLazySelfQuery, useLoginMutation } from '../../api/services/auth/authService';
 import { StyledLink } from '../../components/styled-link/styledLink';
-import { URL_CONSTANT } from '../../constants/URL_CONSTANT';
+import { URL_CONSTANT } from '../../constants/urlConstants';
 
 export default function Login() {
   const [loginMutation] = useLoginMutation();

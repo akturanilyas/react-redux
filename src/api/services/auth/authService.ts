@@ -1,4 +1,4 @@
-import { BACKEND_URL_CONSTANT } from '../../../constants/backendUrlConstant';
+import { BACKEND_URL_CONSTANT } from '../../../constants/backendUrlConstants';
 import { TOKEN, USER_ID } from '../../../constants/localStorageConstants';
 import { ACTION_TYPE } from '../../../enums/actionType';
 import { setUser } from '../../../redux/slices/mainSlice';

@@ -1,4 +1,4 @@
-import { BACKEND_URL_CONSTANT, urlBuilder } from '../../../constants/backendUrlConstant';
+import { BACKEND_URL_CONSTANT, urlBuilder } from '../../../constants/backendUrlConstants';
 import { ACTION_TYPE } from '../../../enums/actionType';
 import { Message } from '../../../types/models';
 import { baseApi } from '../apiServices';

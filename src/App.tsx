@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import { useLazySelfQuery } from './api/services/auth/authService';
 import './App.css';
 import { TOKEN } from './constants/localStorageConstants';
-import { URL_CONSTANT } from './constants/URL_CONSTANT';
+import { URL_CONSTANT } from './constants/urlConstants';
 import { isEmpty } from './helpers/commonHelpers';
 import { useMain } from './redux/slices/mainSlice';
 import Login from './screens/login/Login';

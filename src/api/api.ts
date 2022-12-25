@@ -1,5 +1,5 @@
 import axios, { Method } from 'axios';
-import { BACKEND_URL_CONSTANT } from '../constants/backendUrlConstant';
+import { BACKEND_URL_CONSTANT } from '../constants/backendUrlConstants';
 import { ApiErrorUseCase } from '../constants/errors';
 import { TOKEN, USER_ID } from '../constants/localStorageConstants';
 import { ACTION_TYPE } from '../enums/actionType';
