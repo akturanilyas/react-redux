@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useLazySelfQuery, useLoginMutation } from '../../api/services/auth/authService';
 import { StyledLink } from '../../components/styled-link/styledLink';
-import { UrlConstant } from '../../constants/urlConstant';
+import { URL_CONSTANT } from '../../constants/URL_CONSTANT';
 
 export default function Login() {
   const [loginMutation] = useLoginMutation();
@@ -65,7 +65,7 @@ export default function Login() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <StyledLink to={UrlConstant.SIGN_UP}>You dont have an account? Sign up</StyledLink>
+              <StyledLink to={URL_CONSTANT.SIGN_UP}>You dont have an account? Sign up</StyledLink>
             </Grid>
           </Grid>
         </Box>

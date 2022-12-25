@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import { useLazySelfQuery } from './api/services/auth/authService';
 import './App.css';
 import { TOKEN } from './constants/localStorageConstants';
-import { UrlConstant } from './constants/urlConstant';
+import { URL_CONSTANT } from './constants/URL_CONSTANT';
 import { isEmpty } from './helpers/commonHelpers';
 import { useMain } from './redux/slices/mainSlice';
 import Login from './screens/login/Login';
@@ -17,7 +17,7 @@ function App() {
   const accessToken = localStorage.getItem(TOKEN);
   const [getSelf] = useLazySelfQuery();
   const handleLayout = () => {
-    if (true || (!isEmpty<User>(user) && !isEmpty(accessToken))) {
+    if (!isEmpty<User>(user) && !isEmpty(accessToken)) {
       return (
         <div style={{ position: 'absolute', top: 0, left: 0, height: '100vh', width: '100%' }}>
           <Routes>
@@ -29,8 +29,9 @@ function App() {
 
     return (
       <Routes>
-        <Route path={UrlConstant.LOGIN} element={<Login />} />
-        <Route path={UrlConstant.SIGN_UP} element={<SignUp />} />
+        <Route path={URL_CONSTANT.LOGIN} element={<Login />} />
+        <Route path={URL_CONSTANT.SIGN_UP} element={<SignUp />} />
+        <Route path={'*'} element={<Login />} />
       </Routes>
     );
   };

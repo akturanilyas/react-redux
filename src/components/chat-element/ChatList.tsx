@@ -12,9 +12,10 @@ import { useDispatch } from 'react-redux';
 import { Socket } from 'socket.io-client';
 import { useChatsQuery } from '../../api/services/chat/chatService';
 import { useLazyMessagesQuery } from '../../api/services/message/messageService';
+import { MessageDirection } from '../../enums/messageDirection';
 import { setChatState, useMain } from '../../redux/slices/mainSlice';
 import { getSocket } from '../../services/socketService';
-import { ChatUser } from '../../types/models';
+import { Chat, ChatUser } from '../../types/models';
 import PeopleListPopup from '../people-list-popup/PeopleListPopup';
 
 export default function ChatList() {
@@ -26,8 +27,19 @@ export default function ChatList() {
   const { user } = useMain();
   const listItemButtonClicked = (e: any, chatId: number, targetId: number, targetType: string) => {
     socket?.off(`messageEmit-${user?.id}`);
-    dispatch(setChatState({ chatId, targetId, targetType }));
+
+    const chat: ChatUser = chatsData!.find((item) => {
+      return item!.target_id === targetId;
+    })!;
+
+    dispatch(setChatState({ chatId, targetId, targetType, chat }));
     messages(chatId);
+  };
+
+  const style: React.CSSProperties = {
+    backgroundColor: 'green',
+    border: 1,
+    maxWidth: '100%',
   };
 
   useEffect(() => {
@@ -54,12 +66,11 @@ export default function ChatList() {
 
   return (
     <List
-      className={'col-3'}
+      className={'col-3 border rounded'}
       sx={{
         bgcolor: 'background.paper',
         overflow: 'auto',
         height: '80vh',
-        borderRight: 1,
       }}
     >
       <ListItem style={{ direction: 'rtl' }}>
@@ -70,8 +81,12 @@ export default function ChatList() {
       ) : (
         chatsData?.map((chat: ChatUser) => {
           return (
-            <ListItem key={chat.id} disablePadding>
-              <ListItemButton onClick={(e) => listItemButtonClicked(e, chat.chat_id, chat.target.id, 'user')}>
+            <ListItem className={'rounded'} key={chat.id} disablePadding>
+              <ListItemButton
+                className={'rounded m-1'}
+                style={style}
+                onClick={(e) => listItemButtonClicked(e, chat.chat_id, chat.target.id, 'user')}
+              >
                 <ListItemAvatar>
                   <Avatar alt="" src={''} />
                 </ListItemAvatar>

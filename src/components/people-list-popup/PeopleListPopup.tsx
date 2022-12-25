@@ -30,8 +30,10 @@ export default function PeopleListPopup(props: PeopleListPopupProps) {
   };
 
   const openChat = async (targetId: number) => {
+    const chat = await getChatIdQuery({ query: { target_id: targetId, target_type: 'user' } });
+
     dispatch(setChatState({ target_id: targetId, targetType: 'user' }));
-    await getChatIdQuery({ query: { target_id: targetId, target_type: 'user' } });
+
     refetchChats();
   };
 

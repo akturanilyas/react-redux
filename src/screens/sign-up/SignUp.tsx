@@ -11,7 +11,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from '../../api/services/auth/authService';
-import { UrlConstant } from '../../constants/urlConstant';
+import { URL_CONSTANT } from '../../constants/URL_CONSTANT';
 
 export default function SignUp() {
   const [registerQuery, response] = useRegisterMutation();
@@ -33,7 +33,7 @@ export default function SignUp() {
 
   useEffect(() => {
     if (response.isSuccess) {
-      navigate(UrlConstant.LOGIN);
+      navigate(URL_CONSTANT.LOGIN);
     }
   }, [response]);
 
@@ -100,7 +100,7 @@ export default function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link to={UrlConstant.LOGIN}>Already have an account? Sign in</Link>
+              <Link to={URL_CONSTANT.LOGIN}>Already have an account? Sign in</Link>
             </Grid>
           </Grid>
         </Box>

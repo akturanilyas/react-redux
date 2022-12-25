@@ -7,7 +7,7 @@ import { MessageBox } from '../../components/message-box/MessageBox';
 export default function Chat() {
   return (
     <div>
-      <div className={'row'}>
+      <div className="row m-5">
         <ChatList />
         <MessageBox />
       </div>

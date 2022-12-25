@@ -7,3 +7,9 @@ export const getDateNow = (): string => {
 export const getTimeNow = (): string => {
   return `${date.getHours().toString()}-${date.getMinutes().toString()}`;
 };
+
+export const getTime = (time: Date): string => {
+  const formattedTime = new Date(time);
+
+  return `${formattedTime.getHours().toString()}-${formattedTime.getMinutes().toString()}`;
+};

@@ -1,4 +1,4 @@
-import { LinearProgress, List, TextField } from '@mui/material';
+import { AppBar, Box, LinearProgress, List, TextField, Toolbar, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { useLazyMessagesQuery } from '../../api/services/message/messageService';
@@ -25,6 +25,7 @@ export const MessageBox = () => {
   const send = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if ('Enter' === e.key) {
       sendMessage(text, chatState!.targetId, chatState!.targetType);
+      setText('');
     }
   };
 
@@ -33,7 +34,13 @@ export const MessageBox = () => {
   };
 
   const addMessage = (response: MessageType) => {
-    setMessages((messages) => [...messages, response]);
+    const checkMessage = messages.find((item) => response.id === item.id);
+
+    if (!checkMessage) {
+      setMessages((messages) => [...messages, response]);
+    } else {
+      console.log('mesaj var zaten');
+    }
   };
 
   useEffect(() => {
@@ -62,48 +69,52 @@ export const MessageBox = () => {
 
   return (
     <>
-      <div className="col-8">
+      <Box className="col-8 border-2 rounded" sx={{ height: '80vh' }}>
         {!chatState?.chatId ? (
           <h1>Chat Seç</h1>
         ) : (
           <>
-            <List
-              sx={{
-                bgcolor: 'background.paper',
-                overflow: 'auto',
-                height: '80vh',
-              }}
-            >
+            <AppBar position="static">
+              <Toolbar>
+                <Typography variant="h6" color="inherit" component="div">
+                  {chatState?.chat?.user?.first_name}
+                </Typography>
+              </Toolbar>
+            </AppBar>
+            <List className={'border'} sx={{ overflow: 'auto', height: '80%' }}>
               {/* eslint-disable-next-line no-nested-ternary */}
-              {
-                // eslint-disable-next-line no-nested-ternary
-                messages?.length === 0 ? (
-                  <h1>Mesaj yok</h1>
-                ) : isLoading > 0 ? (
-                  <LinearProgress color="success" />
-                ) : (
-                  messages?.map((message: any) => {
-                    return (
-                      <div className="d-flex" key={message.id}>
-                        <Message
-                          key={message.id}
-                          text={message.text}
-                          userName={message.sender?.username ?? 'username'}
-                          direction={
-                            message?.sender?.id === user?.id ? MessageDirection.OUTBOUND : MessageDirection.INBOUND
-                          }
-                          time={message.created_at}
-                        />
-                      </div>
-                    );
-                  })
-                )
-              }
+              {messages?.length === 0 ? (
+                <h1>Mesaj yok</h1>
+              ) : isLoading > 0 ? (
+                <LinearProgress color="success" />
+              ) : (
+                messages?.map((message) => {
+                  return (
+                    <div className="d-flex" key={message.id}>
+                      <Message
+                        key={message.id}
+                        text={message.text}
+                        userName={message.sender?.username ?? 'username'}
+                        direction={
+                          message?.sender?.id === user?.id ? MessageDirection.OUTBOUND : MessageDirection.INBOUND
+                        }
+                        time={message.created_at}
+                      />
+                    </div>
+                  );
+                })
+              )}
             </List>
-            <TextField className={'p-0 w-100'} onKeyDown={send} onChange={changeText} />
+            <TextField
+              className={'w-100 my-2'}
+              style={{ height: '10%' }}
+              value={text}
+              onKeyDown={send}
+              onChange={changeText}
+            />
           </>
         )}
-      </div>
+      </Box>
     </>
   );
 };

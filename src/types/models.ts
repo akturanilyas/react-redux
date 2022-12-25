@@ -42,6 +42,7 @@ export interface Chat {
   type?: string;
   notify_count: number;
   messages: Message[];
+  user: User;
 }
 
 export interface ChatUser {
@@ -63,4 +64,5 @@ export interface ChatState {
   targetId: number;
   targetType: string;
   isLoading: boolean;
+  chat: Chat;
 }
