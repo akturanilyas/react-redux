@@ -1,3 +1,6 @@
+import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import React from 'react';
+
 interface MessageProps {
   userName: string;
   text: string;
@@ -7,18 +10,19 @@ interface MessageProps {
 
 export const Message = (props: MessageProps) => {
   return (
-    <>
-      <div className="border w-auto">
-        <div className="row" style={{ direction: 'ltr' }}>
-          <span>{props.userName}</span>
-        </div>
-        <div className="row">
-          <span>{props.text}</span>
-        </div>
-        <div className="row">
-          <span>{props.time.toString()}</span>
-        </div>
-      </div>
-    </>
+    <div className="col-8" style={{ fontSize: '14px' }}>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        </ListItemAvatar>
+        <ListItemText primary={props.userName} secondary={<React.Fragment>{props.text}</React.Fragment>} />
+      </ListItem>
+      {false && (
+        <ListItem style={{ textAlign: 'end' }}>
+          <ListItemText primary={props.userName} secondary={<React.Fragment>{props.text}</React.Fragment>} />
+          <ListItemText primary={props.userName} secondary={<React.Fragment>{props.time.toString()}</React.Fragment>} />
+        </ListItem>
+      )}
+    </div>
   );
 };

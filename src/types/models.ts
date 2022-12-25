@@ -1,3 +1,14 @@
+export interface BaseEnum {
+  group: string | null;
+  value: string;
+  key: string;
+  description: string;
+}
+
+export interface Auth {
+  token: string;
+}
+
 export interface User {
   id: number;
   created_at: Date;
@@ -45,4 +56,11 @@ export interface ChatUser {
   target_id: number;
   target_type: string;
   messages: Message[];
+}
+
+export interface ChatState {
+  chatId: number;
+  targetId: number;
+  targetType: string;
+  isLoading: boolean;
 }

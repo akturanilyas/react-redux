@@ -1,32 +1,30 @@
-import { TextField } from '@mui/material';
+import { LinearProgress, List, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useMessagesMutation, useSendMessageMutation } from '../../api/message';
-import { useAppSelector } from '../../app/hooks';
-import {
-  selectChatId,
-  selectChats,
-  selectTargetId,
-  selectTargetType,
-  setChatMessages,
-} from '../../features/chat/chatSlice';
+import { Socket } from 'socket.io-client';
+import { useLazyMessagesQuery } from '../../api/services/message/messageService';
+import { ChatEvent } from '../../enums/chatEvent';
+import { MessageDirection } from '../../enums/messageDirection';
+import { useGlobalLoading } from '../../redux/slices/loadingSlice';
+import { useMain } from '../../redux/slices/mainSlice';
+import { getSocket } from '../../services/socketService';
+import { Message as MessageType } from '../../types/models';
 import { Message } from '../message/Message';
-
-const textFieldHeight = 100;
 
 export const MessageBox = () => {
   const [text, setText] = useState('');
-  const chats = useAppSelector(selectChats);
-  const chatId = useAppSelector(selectChatId);
-  const targetId = useAppSelector(selectTargetId);
-  const targetType = useAppSelector(selectTargetType);
-  const [sendMessage] = useSendMessageMutation();
-  const [messagesQuery, { data: messages, isLoading: messageIsLoading }] = useMessagesMutation();
-  const dispatch = useDispatch();
+  const { chatState, user } = useMain();
+  const { loading: isLoading } = useGlobalLoading();
+  const [socket, setSocket] = useState<null | Socket>(null);
+  const [messages, setMessages] = useState<Array<MessageType>>([]);
+  const [getMessages] = useLazyMessagesQuery();
+
+  const sendMessage = (text: string, targetId: number, targetType: string) => {
+    socket?.emit(ChatEvent.SEND_MESSAGE, { targetId, targetType, text });
+  };
 
   const send = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if ('Enter' === e.key) {
-      sendMessage({ text, targetId, targetType });
+      sendMessage(text, chatState!.targetId, chatState!.targetType);
     }
   };
 
@@ -34,57 +32,77 @@ export const MessageBox = () => {
     setText(event.target.value);
   };
 
-  useEffect(() => {
-    if (!messageIsLoading && messages && chatId) {
-      const newChats = chats.map((item) => {
-        if (item.chat_id === chatId) {
-          return { ...item, messages };
-        }
+  const addMessage = (response: MessageType) => {
+    setMessages((messages) => [...messages, response]);
+  };
 
-        return item;
+  useEffect(() => {
+    if (chatState?.chatId) {
+      getSocket().then((socket) => {
+        console.log('socketegirdi');
+        setSocket(socket);
+        socket.on(`messageEmit-${user!.id}`, (response: MessageType) => {
+          addMessage(response);
+        });
+
+        return () => {
+          socket.off(`messageEmit-${user?.id}`);
+        };
       });
-      dispatch(setChatMessages({ chats: newChats }));
     }
-  }, [messageIsLoading]);
+  }, [chatState?.chatId]);
 
   useEffect(() => {
-    if (null !== chatId) {
-      messagesQuery(chatId);
+    if (chatState?.chatId) {
+      getMessages(chatState?.chatId)
+        .unwrap()
+        .then((item) => setMessages(item));
     }
-  }, [chatId]);
+  }, [chatState?.chatId]);
 
   return (
     <>
-      <div className="container h-100 border-2 row m-0">
-        <div className="col-12" style={{ height: `calc(100% - ${textFieldHeight}px)` }}>
-          <div className="row">
-            {/* eslint-disable-next-line no-nested-ternary */}
-            {!chatId ? (
-              <h1>asdjnasdjkans</h1>
-            ) : !chats.find((item) => item.chat_id === chatId)?.messages?.length ? (
-              <h1>Mesaj yok</h1>
-            ) : (
-              chats
-                .find((item) => item.chat_id === chatId)
-                ?.messages.map((message) => {
-                  return (
-                    <div className="row">
-                      <Message
-                        key={message.id}
-                        text={message.text}
-                        userName={message.sender?.username ?? 'username'}
-                        direction={message.direction}
-                        time={message.created_at}
-                      />
-                    </div>
-                  );
-                })
-            )}
-          </div>
-        </div>
-        <div className="col-12 row" style={{ height: textFieldHeight }}>
-          <TextField className={'p-0 w-100'} onKeyDown={send} onChange={changeText} />
-        </div>
+      <div className="col-8">
+        {!chatState?.chatId ? (
+          <h1>Chat Seç</h1>
+        ) : (
+          <>
+            <List
+              sx={{
+                bgcolor: 'background.paper',
+                overflow: 'auto',
+                height: '80vh',
+              }}
+            >
+              {/* eslint-disable-next-line no-nested-ternary */}
+              {
+                // eslint-disable-next-line no-nested-ternary
+                messages?.length === 0 ? (
+                  <h1>Mesaj yok</h1>
+                ) : isLoading > 0 ? (
+                  <LinearProgress color="success" />
+                ) : (
+                  messages?.map((message: any) => {
+                    return (
+                      <div className="d-flex" key={message.id}>
+                        <Message
+                          key={message.id}
+                          text={message.text}
+                          userName={message.sender?.username ?? 'username'}
+                          direction={
+                            message?.sender?.id === user?.id ? MessageDirection.OUTBOUND : MessageDirection.INBOUND
+                          }
+                          time={message.created_at}
+                        />
+                      </div>
+                    );
+                  })
+                )
+              }
+            </List>
+            <TextField className={'p-0 w-100'} onKeyDown={send} onChange={changeText} />
+          </>
+        )}
       </div>
     </>
   );

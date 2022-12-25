@@ -1,6 +1,8 @@
-export const BackendUrlConstant = {
+export const BACKEND_URL_CONSTANT = {
   LOGIN: 'api/auth/login',
   REGISTER: 'api/auth/register',
+  REFRESH_TOKEN: 'api/auth/refresh',
+  LOGOUT: 'api/auth/logout  ',
   ME: 'api/user/me',
   GET_CHAT_USERS: '/api/chat-users',
   GET_CHATS: '/api/chats',

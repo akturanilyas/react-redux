@@ -1,35 +1,19 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { authApi } from '../api/auth';
-import { chatApi } from '../api/chat/chat';
-import { messageApi } from '../api/message';
-import { userApi } from '../api/user';
-import authReducer from '../features/auth/authSlice';
-import chatReducer from '../features/chat/chatSlice';
-import counterReducer from '../features/counter/counterSlice';
-import { rtkQueryErrorLogger } from '../features/errorMiddleware';
-import userReducer from '../features/user/userSlice';
+import { setupListeners } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '../api/services/apiServices';
+import { mainSlice } from '../redux/slices/mainSlice';
+import { loadingSlice } from '../redux/slices/loadingSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
-    auth: authReducer,
-    user: userReducer,
-    chatSlice: chatReducer,
-    [authApi.reducerPath]: authApi.reducer,
-    [userApi.reducerPath]: userApi.reducer,
-    [chatApi.reducerPath]: chatApi.reducer,
-    [messageApi.reducerPath]: messageApi.reducer,
+    main: mainSlice.reducer,
+    loading: loadingSlice.reducer,
+    [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    })
-      .concat(authApi.middleware)
-      .concat(userApi.middleware)
-      .concat(chatApi.middleware)
-      .concat(messageApi.middleware)
-      .concat(rtkQueryErrorLogger),
+    }).concat(baseApi.middleware),
   devTools: true,
 });
 

@@ -10,11 +10,11 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useRegisterMutation } from '../../api/services/auth/authService';
 import { UrlConstant } from '../../constants/urlConstant';
-import { useRegisterQueryMutation } from '../../api/auth';
 
 export default function SignUp() {
-  const [registerQuery, response] = useRegisterQueryMutation();
+  const [registerQuery, response] = useRegisterMutation();
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -28,7 +28,7 @@ export default function SignUp() {
       password: data.get('password') as string,
     };
 
-    await registerQuery(formData);
+    await registerQuery({ body: formData });
   };
 
   useEffect(() => {

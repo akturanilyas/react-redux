@@ -8,20 +8,13 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useLoginQueryMutation } from '../../api/auth';
+import { useLazySelfQuery, useLoginMutation } from '../../api/services/auth/authService';
 import { StyledLink } from '../../components/styled-link/styledLink';
 import { UrlConstant } from '../../constants/urlConstant';
-import { login, selectIsAuthorized } from '../../features/auth/authSlice';
-import { AuthService } from '../../services/authService';
 
 export default function Login() {
-  const [loginQuery, response] = useLoginQueryMutation();
-  const dispatch = useDispatch();
-  const isAuthorized = useSelector(selectIsAuthorized);
-  const navigate = useNavigate();
+  const [loginMutation] = useLoginMutation();
+  const [getSelf] = useLazySelfQuery();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -29,38 +22,9 @@ export default function Login() {
 
     const username = data.get('username') as string;
     const password = data.get('password') as string;
-    try {
-      await loginQuery({ username, password }).unwrap();
-    } catch (e) {
-      console.log(e);
-    }
+
+    loginMutation({ body: { username, password } }).then(() => getSelf());
   }
-
-  useEffect(() => {
-    if (response.isSuccess) {
-      AuthService.setToken(response.data.token).then(() => {
-        dispatch(login(response.data.token));
-      });
-    }
-  }, [response]);
-
-  useEffect(() => {
-    const getToken = async () => {
-      const data = await AuthService.getToken();
-
-      if (null !== data) {
-        dispatch(login({ data }));
-      }
-
-      if (true === isAuthorized) {
-        navigate('/');
-      }
-
-      return data;
-    };
-
-    getToken();
-  }, [isAuthorized]);
 
   return (
     <Container component="main" maxWidth="xs" className={'login-page'}>

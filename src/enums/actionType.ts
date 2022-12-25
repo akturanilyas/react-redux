@@ -1,4 +1,4 @@
-export enum ActionTypes {
+export enum ACTION_TYPE {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',

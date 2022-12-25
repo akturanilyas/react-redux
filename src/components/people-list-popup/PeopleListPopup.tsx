@@ -5,23 +5,21 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useGetChatIdMutation, useGetUserChatMutation } from '../../api/chat/chat';
-import { User } from '../../api/models';
-import { useChatUsersQuery } from '../../api/user';
-import { useAppSelector } from '../../app/hooks';
-import { selectTargetId, setChatState } from '../../features/chat/chatSlice';
-import { selectChatUsers, setChatUsers } from '../../features/user/userSlice';
+import { useDispatch } from 'react-redux';
+import { useGetChatIdMutation } from '../../api/services/chat/chatService';
+import { useChatUsersQuery } from '../../api/services/user/user';
+import { setChatState } from '../../redux/slices/mainSlice';
+import { User } from '../../types/models';
 
-export default function PeopleListPopup() {
+interface PeopleListPopupProps {
+  refetchChats: () => void;
+}
+export default function PeopleListPopup(props: PeopleListPopupProps) {
+  const { refetchChats } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [getUserChatQuery, getUserChatResponse] = useGetUserChatMutation();
-  const targetId = useAppSelector(selectTargetId);
-  const [getChatIdQuery, { data: chatIdResponse, isLoading: getChatIdIsLoading }] = useGetChatIdMutation();
+  const [getChatIdQuery, data] = useGetChatIdMutation();
   const dispatch = useDispatch();
-  const chatUsers: User[] = useSelector(selectChatUsers) as [];
-  const { data, isLoading } = useChatUsersQuery({});
+  const { data: peopleList, isLoading } = useChatUsersQuery({});
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -31,24 +29,10 @@ export default function PeopleListPopup() {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    if (!isLoading) dispatch(setChatUsers(data));
-  }, [isLoading]);
-
-  useEffect(() => {
-    // getUserChatQuery();
-  }, [getUserChatResponse]);
-
-  useEffect(() => {
-    if (!getChatIdIsLoading) {
-      dispatch(setChatState({ chatId: chatIdResponse, targetType: 'user' }));
-      getUserChatQuery({ user_id: targetId ?? 0 });
-    }
-  }, [getChatIdIsLoading]);
-
   const openChat = async (targetId: number) => {
     dispatch(setChatState({ target_id: targetId, targetType: 'user' }));
-    getChatIdQuery({ target_id: targetId, target_type: 'user' });
+    await getChatIdQuery({ query: { target_id: targetId, target_type: 'user' } });
+    refetchChats();
   };
 
   return (
@@ -105,9 +89,9 @@ export default function PeopleListPopup() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {chatUsers.map((user: User) => {
+        {peopleList?.map((user: User) => {
           return (
-            <MenuItem value={user.id} onClick={() => openChat(user.id)}>
+            <MenuItem key={user.id} value={user.id} onClick={() => openChat(user.id)}>
               <Avatar /> {user.username}
             </MenuItem>
           );
