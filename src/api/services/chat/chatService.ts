@@ -1,14 +1,14 @@
 import { BACKEND_URL_CONSTANT, urlBuilder } from '../../../constants/backendUrlConstants';
 import { ACTION_TYPE } from '../../../enums/actionType';
 import { setChatId } from '../../../redux/slices/mainSlice';
-import { Chat, ChatUser } from '../../../types/models';
+import { Chat } from '../../../types/models';
 import { Get } from '../../commonServiceInterface';
 import { baseApi } from '../apiServices';
 import { GET_CHAT_ID, getChatByUser } from './chatInterface';
 
 export const chatApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    chats: builder.query<Array<ChatUser>, void>({
+    chats: builder.query<Array<Chat>, void>({
       query: () => ({
         url: BACKEND_URL_CONSTANT.GET_CHATS,
         method: ACTION_TYPE.GET,

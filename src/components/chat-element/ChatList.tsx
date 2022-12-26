@@ -12,10 +12,9 @@ import { useDispatch } from 'react-redux';
 import { Socket } from 'socket.io-client';
 import { useChatsQuery } from '../../api/services/chat/chatService';
 import { useLazyMessagesQuery } from '../../api/services/message/messageService';
-import { MessageDirection } from '../../enums/messageDirection';
 import { setChatState, useMain } from '../../redux/slices/mainSlice';
 import { getSocket } from '../../services/socketService';
-import { Chat, ChatUser } from '../../types/models';
+import { Chat } from '../../types/models';
 import PeopleListPopup from '../people-list-popup/PeopleListPopup';
 
 export default function ChatList() {
@@ -25,11 +24,12 @@ export default function ChatList() {
   const [socket, setSocket] = useState<null | Socket>(null);
   const dispatch = useDispatch();
   const { user } = useMain();
+
   const listItemButtonClicked = (e: any, chatId: number, targetId: number, targetType: string) => {
     socket?.off(`messageEmit-${user?.id}`);
 
-    const chat: ChatUser = chatsData!.find((item) => {
-      return item!.target_id === targetId;
+    const chat: Chat = chatsData!.find((item: Chat) => {
+      return item!.usersChats[0].target_id === targetId && item!.usersChats[0].target_type === targetType;
     })!;
 
     dispatch(setChatState({ chatId, targetId, targetType, chat }));
@@ -79,22 +79,24 @@ export default function ChatList() {
       {isLoading ? (
         <LinearProgress color="success" />
       ) : (
-        chatsData?.map((chat: ChatUser) => {
+        chatsData?.map((chat: Chat) => {
           return (
             <ListItem className={'rounded'} key={chat.id} disablePadding>
               <ListItemButton
                 className={'rounded m-1'}
                 style={style}
-                onClick={(e) => listItemButtonClicked(e, chat.chat_id, chat.target.id, 'user')}
+                onClick={(e) =>
+                  listItemButtonClicked(e, chat.id, chat.usersChats[0].target_id, chat.usersChats[0].target_type)
+                }
               >
                 <ListItemAvatar>
                   <Avatar alt="" src={''} />
                 </ListItemAvatar>
                 <Col>
-                  <ListItemText id={chat.id.toString()} primary={chat.target.username} />
+                  <ListItemText id={chat.id.toString()} primary={chat.usersChats[0].target.username} />
                   <ListItemText
                     id={`${chat.id.toString()}2`}
-                    primary={`${chat.target.first_name} ${chat.target.last_name}`}
+                    primary={`${chat.usersChats[0].target.first_name} ${chat.usersChats[0].target.last_name}`}
                   />
                 </Col>
               </ListItemButton>

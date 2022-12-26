@@ -34,7 +34,7 @@ export const MessageBox = () => {
   };
 
   const addMessage = (response: MessageType) => {
-    const checkMessage = messages.find((item) => response.id === item.id);
+    const checkMessage = messages.find((item: MessageType) => response.id === item.id);
 
     if (!checkMessage) {
       setMessages((messages) => [...messages, response]);
@@ -77,7 +77,7 @@ export const MessageBox = () => {
             <AppBar position="static">
               <Toolbar>
                 <Typography variant="h6" color="inherit" component="div">
-                  {chatState?.chat?.user?.first_name}
+                  {chatState.chat?.usersChats[0].target?.username}
                 </Typography>
               </Toolbar>
             </AppBar>

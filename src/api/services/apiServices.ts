@@ -1,6 +1,8 @@
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
 import { BaseQueryFn, createApi } from '@reduxjs/toolkit/query/react';
 import { Method } from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ApiErrorUseCase } from '../../constants/errors';
 import { TOKEN } from '../../constants/localStorageConstants';
 import { ACTION_TYPE } from '../../enums/actionType';
@@ -18,22 +20,20 @@ const apiErrorHandler = (error: ApiError, dispatch: ThunkDispatch<unknown, unkno
     localStorage.removeItem(TOKEN);
   };
 
-  const pushError = () => {
-    /*
-        toast.error('Success Notification !', {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-         */
+  const pushError = (e: ApiError) => {
+    toast.error(e.errorLabel, {
+      position: toast.POSITION.TOP_RIGHT,
+    });
   };
 
   if (error) {
     switch (error.useCase) {
       case ApiErrorUseCase.LOGOUT:
         logout();
-        // pushError();
+        pushError(error);
         break;
       case ApiErrorUseCase.SHOW_MESSAGE:
-        pushError();
+        pushError(error);
         break;
       default:
         break;

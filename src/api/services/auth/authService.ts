@@ -13,6 +13,7 @@ export const authApi = baseApi.injectEndpoints({
       query: ({ body }) => ({ url: BACKEND_URL_CONSTANT.LOGIN, method: ACTION_TYPE.POST, data: { body } }),
       async onQueryStarted(_, { queryFulfilled }) {
         queryFulfilled.then((response) => {
+          debugger;
           const { data }: { data: Auth } = response;
           localStorage.setItem(TOKEN, data.token);
         });
@@ -20,13 +21,6 @@ export const authApi = baseApi.injectEndpoints({
     }),
     register: builder.mutation<Auth, Post<RegisterBodyRequest>>({
       query: ({ body }) => ({ url: BACKEND_URL_CONSTANT.REGISTER, method: ACTION_TYPE.POST, data: { body } }),
-      async onQueryStarted(_, { queryFulfilled }) {
-        queryFulfilled.then((response) => {
-          const { data } = response;
-
-          localStorage.setItem(TOKEN, JSON.stringify(data));
-        });
-      },
     }),
     self: builder.query<User, void>({
       query: () => ({ url: BACKEND_URL_CONSTANT.ME, method: ACTION_TYPE.GET }),

@@ -3,11 +3,11 @@ export const BACKEND_URL_CONSTANT = {
   REGISTER: 'api/auth/register',
   REFRESH_TOKEN: 'api/auth/refresh',
   LOGOUT: 'api/auth/logout  ',
-  ME: 'api/user/me',
+  ME: 'api/users/me',
   GET_CHAT_USERS: '/api/chat-users',
   GET_CHATS: '/api/chats',
   GET_MESSAGES: '/api/chats/{chat_id}/messages',
-  GET_CHAT_BY_USER: '/api/user/{user_id}/chat',
+  GET_CHAT_BY_USER: '/api/users/{user_id}/chat',
   GET_CHAT_ID: '/api/chats/get-chat-id',
 };
 
