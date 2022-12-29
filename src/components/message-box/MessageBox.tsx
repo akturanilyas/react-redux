@@ -69,7 +69,7 @@ export const MessageBox = () => {
 
   return (
     <>
-      <Box className="col-8 border-2 rounded" sx={{ height: '80vh' }}>
+      <Box className="col-span-9">
         {!chatState?.chatId ? (
           <h1>Chat Seç</h1>
         ) : (

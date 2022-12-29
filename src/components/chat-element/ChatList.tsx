@@ -38,7 +38,6 @@ export default function ChatList() {
 
   const style: React.CSSProperties = {
     backgroundColor: 'green',
-    border: 1,
     maxWidth: '100%',
   };
 
@@ -65,45 +64,39 @@ export default function ChatList() {
   }, []);
 
   return (
-    <List
-      className={'col-3 border rounded'}
-      sx={{
-        bgcolor: 'background.paper',
-        overflow: 'auto',
-        height: '80vh',
-      }}
-    >
-      <ListItem style={{ direction: 'rtl' }}>
-        <PeopleListPopup refetchChats={refetch} />
-      </ListItem>
-      {isLoading ? (
-        <LinearProgress color="success" />
-      ) : (
-        chatsData?.map((chat: Chat) => {
-          return (
-            <ListItem className={'rounded'} key={chat.id} disablePadding>
-              <ListItemButton
-                className={'rounded m-1'}
-                style={style}
-                onClick={(e) =>
-                  listItemButtonClicked(e, chat.id, chat.usersChats[0].target_id, chat.usersChats[0].target_type)
-                }
-              >
-                <ListItemAvatar>
-                  <Avatar alt="" src={''} />
-                </ListItemAvatar>
-                <Col>
-                  <ListItemText id={chat.id.toString()} primary={chat.usersChats[0].target.username} />
-                  <ListItemText
-                    id={`${chat.id.toString()}2`}
-                    primary={`${chat.usersChats[0].target.first_name} ${chat.usersChats[0].target.last_name}`}
-                  />
-                </Col>
-              </ListItemButton>
-            </ListItem>
-          );
-        })
-      )}
+    <List className={'col-span-3 border-2 rounded-md'}>
+      <div className="p-2">
+        <ListItem className={'border rounded-md border-slate-500 mb-5'}>
+          <PeopleListPopup refetchChats={refetch} />
+        </ListItem>
+        {isLoading ? (
+          <LinearProgress color="success" />
+        ) : (
+          chatsData?.map((chat: Chat) => {
+            return (
+              <ListItem className={'border-2 rounded-xl'} key={chat.id} disablePadding style={style}>
+                <ListItemButton
+                  className={'rounded'}
+                  onClick={(e) =>
+                    listItemButtonClicked(e, chat.id, chat.usersChats[0].target_id, chat.usersChats[0].target_type)
+                  }
+                >
+                  <ListItemAvatar>
+                    <Avatar alt="" src={''} />
+                  </ListItemAvatar>
+                  <Col>
+                    <ListItemText id={chat.id.toString()} primary={chat.usersChats[0].target.username} />
+                    <ListItemText
+                      id={`${chat.id.toString()}2`}
+                      primary={`${chat.usersChats[0].target.first_name} ${chat.usersChats[0].target.last_name}`}
+                    />
+                  </Col>
+                </ListItemButton>
+              </ListItem>
+            );
+          })
+        )}
+      </div>
     </List>
   );
 }
