@@ -1272,3 +1272,51 @@ code {
 .message-box-height {
   height: 70%;
 }
+
+.h-pt-7 {
+  height: 7%;
+}
+
+.h-pt-10 {
+  height: 10%;
+}
+
+.h-pt-20 {
+  height: 20%;
+}
+
+.h-pt-30 {
+  height: 30%;
+}
+
+.h-pt-40 {
+  height: 40%;
+}
+
+.h-pt-50 {
+  height: 50%;
+}
+
+.h-pt-60 {
+  height: 60%;
+}
+
+.h-pt-70 {
+  height: 70%;
+}
+
+.h-pt-80 {
+  height: 80%;
+}
+
+.h-pt-86 {
+  height: 86%;
+}
+
+.h-pt-90 {
+  height: 90%;
+}
+
+.chat-height {
+  height: calc(100% - 8rem);
+}
