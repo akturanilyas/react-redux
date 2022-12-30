@@ -442,7 +442,7 @@ video {
   --tw-numeric-fraction: ;
   --tw-ring-inset: ;
   --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
+  --tw-ring-offset-color: #3d0202;
   --tw-ring-color: rgb(59 130 246 / 0.5);
   --tw-ring-offset-shadow: 0 0 #0000;
   --tw-ring-shadow: 0 0 #0000;
@@ -1267,4 +1267,8 @@ code {
 
 .bg-default-color-dark {
   background-color: #131516
+}
+
+.message-box-height {
+  height: 70%;
 }

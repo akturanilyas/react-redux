@@ -22,7 +22,7 @@ export const Message = (props: MessageProps) => {
   };
 
   return (
-    <div className="my-1 mx-2 rounded" style={messageStyle}>
+    <div className="my-1 mx-2 rounded flex-row-reverse" style={messageStyle}>
       <ListItem>
         {direction === MessageDirection.OUTBOUND ? (
           <ListItemAvatar>

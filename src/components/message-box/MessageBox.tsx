@@ -1,4 +1,4 @@
-import { AppBar, Box, LinearProgress, List, TextField, Toolbar, Typography } from '@mui/material';
+import { LinearProgress, List, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { useLazyMessagesQuery } from '../../api/services/message/messageService';
@@ -69,52 +69,50 @@ export const MessageBox = () => {
 
   return (
     <>
-      <Box className="col-span-9">
+      <div className="col-span-9 h-full max-h-full">
         {!chatState?.chatId ? (
           <h1>Chat Seç</h1>
         ) : (
-          <>
-            <AppBar position="static">
-              <Toolbar>
-                <Typography variant="h6" color="inherit" component="div">
-                  {chatState.chat?.usersChats[0].target?.username}
-                </Typography>
-              </Toolbar>
-            </AppBar>
-            <List className={'border'} sx={{ overflow: 'auto', height: '80%' }}>
-              {/* eslint-disable-next-line no-nested-ternary */}
-              {messages?.length === 0 ? (
-                <h1>Mesaj yok</h1>
-              ) : isLoading > 0 ? (
-                <LinearProgress color="success" />
-              ) : (
-                messages?.map((message) => {
-                  return (
-                    <div className="d-flex" key={message.id}>
-                      <Message
-                        key={message.id}
-                        text={message.text}
-                        userName={message.sender?.username ?? 'username'}
-                        direction={
-                          message?.sender?.id === user?.id ? MessageDirection.OUTBOUND : MessageDirection.INBOUND
-                        }
-                        time={message.created_at}
-                      />
-                    </div>
-                  );
-                })
-              )}
-            </List>
+          <div className={'px-5'}>
+            <div className="px-5 primary bg-green-700 h-16 border border-amber-500 rounded-xl flex items-center">
+              {chatState.chat?.usersChats[0].target?.username}
+            </div>
+            <div className={'message-box-height col-auto overflow-y-auto'}>
+              <List className={'border'}>
+                {/* eslint-disable-next-line no-nested-ternary */}
+                {messages?.length === 0 ? (
+                  <h1>Mesaj yok</h1>
+                ) : isLoading > 0 ? (
+                  <LinearProgress color="success" />
+                ) : (
+                  messages?.map((message) => {
+                    return (
+                      <div className="row">
+                        <Message
+                          key={message.id}
+                          text={message.text}
+                          userName={message.sender?.username ?? 'username'}
+                          direction={
+                            message?.sender_id === user!.id ? MessageDirection.OUTBOUND : MessageDirection.INBOUND
+                          }
+                          time={message.created_at}
+                        />
+                      </div>
+                    );
+                  })
+                )}
+              </List>
+            </div>
             <TextField
-              className={'w-100 my-2'}
+              className={'w-full my-2'}
               style={{ height: '10%' }}
               value={text}
               onKeyDown={send}
               onChange={changeText}
             />
-          </>
+          </div>
         )}
-      </Box>
+      </div>
     </>
   );
 };

@@ -6,7 +6,6 @@ export default function Chat() {
   return (
     <div className="min-h-screen grid grid-cols-12 divide-x bg-default-color-dark">
       <ChatList />
-
       <MessageBox />
     </div>
   );
