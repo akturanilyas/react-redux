@@ -35,7 +35,7 @@ export const MessageBox = () => {
   const addMessage = (response: MessageType) => {
     const checkMessage = messages.find((item: MessageType) => response.id === item.id);
 
-    if (!checkMessage) {
+    if (!checkMessage && response.id === chatState?.chatId) {
       setMessages((messages) => [...messages, response]);
     } else {
       console.log('mesaj var zaten');
@@ -69,15 +69,12 @@ export const MessageBox = () => {
   return (
     <div className="col-span-9 h-full" style={{ height: 'inherit' }}>
       {!chatState?.chatId ? (
-        <SelectChatText/>
+        <SelectChatText />
       ) : (
         <>
-          <ChatBar username={chatState.chat?.usersChats[0].target.username}/>
-          <Messages messages={messages}/>
-          <CustomizedTextField
-            onSubmit={send}
-            text={text}
-            onChange={changeText}/>
+          <ChatBar username={chatState.chat?.usersChats[0].target.username} />
+          <Messages messages={messages} />
+          <CustomizedTextField onSubmit={send} text={text} onChange={changeText} />
         </>
       )}
     </div>

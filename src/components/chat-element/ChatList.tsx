@@ -6,62 +6,96 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Col } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { Socket } from 'socket.io-client';
 import { useChatsQuery } from '../../api/services/chat/chatService';
 import { useLazyMessagesQuery } from '../../api/services/message/messageService';
 import { setChatState, useMain } from '../../redux/slices/mainSlice';
 import { getSocket } from '../../services/socketService';
-import { Chat } from '../../types/models';
+import { Chat, Message as MessageType } from '../../types/models';
 import PeopleListPopup from '../people-list-popup/PeopleListPopup';
 
 export default function ChatList() {
-  const [isConnected, setIsConnected] = useState(false);
+  const socketIsCalled = useRef(false);
   const [messages] = useLazyMessagesQuery();
   const { data: chatsData, isLoading, refetch } = useChatsQuery();
-  const [socket, setSocket] = useState<null | Socket>(null);
   const dispatch = useDispatch();
-  const { user } = useMain();
+  const { user, chatState } = useMain();
+  const [chats, setChats] = useState<Chat[]>([]);
+  const [lastMessage, setLastMessage] = useState<MessageType>();
+
+  const setNotifyCount = (chatId: number) => {
+    let tempChats = chats;
+    tempChats = tempChats.map((chat: Chat) => {
+      if (chat.id === chatId) {
+        if (chat.notify_count === undefined) {
+          chat = { ...chat, notify_count: 0 };
+        }
+
+        chat.notify_count! += 1;
+
+        return chat;
+      }
+
+      return chat;
+    });
+
+    setChats([...tempChats]);
+  };
+
+  const resetNotifyCount = (chatId: number) => {
+    let tempChats = chats;
+    tempChats = tempChats.map((chat: Chat) => {
+      if (chat.id === chatId) {
+        chat = { ...chat, notify_count: 0 };
+
+        return chat;
+      }
+
+      return chat;
+    });
+
+    setChats([...tempChats]);
+  };
+
+  const incrementNotifyCount = (response: MessageType) => {
+    setNotifyCount(response?.chat_id);
+  };
 
   const listItemButtonClicked = (e: any, chatId: number, targetId: number, targetType: string) => {
-    socket?.off(`messageEmit-${user?.id}`);
-
     const chat: Chat = chatsData!.find((item: Chat) => {
       return item!.usersChats[0].target_id === targetId && item!.usersChats[0].target_type === targetType;
     })!;
 
+    resetNotifyCount(chatId);
     dispatch(setChatState({ chatId, targetId, targetType, chat }));
     messages(chatId);
   };
 
-  const style: React.CSSProperties = {
-    backgroundColor: 'green',
-    maxWidth: '100%',
-  };
-
   useEffect(() => {
-    if (null !== socket) {
-      if (!isConnected && user?.id) {
-        console.log(`messageEmit-${user?.id}`);
-        setIsConnected(true);
-      } else {
-        console.log('not connect');
-      }
-
-      return () => {
-        console.log('socket kapatıldı');
-        socket.off(`messageEmit-${user?.id}`);
-      };
+    if (user?.id && !socketIsCalled.current) {
+      console.log(user?.id);
+      getSocket().then((socket) => {
+        socket.on(`messageEmit-${user!.id}`, (response: MessageType) => {
+          setLastMessage(response);
+        });
+      });
+      socketIsCalled.current = true;
     }
-  }, [socket]);
+  }, [user!.id]);
 
   useEffect(() => {
-    getSocket().then((socket) => {
-      setSocket(socket);
-    });
-  }, []);
+    if (!isLoading) {
+      setChats(chatsData ?? []);
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (chatState?.chatId !== lastMessage?.chat_id) {
+      incrementNotifyCount(lastMessage!);
+    }
+  }, [lastMessage]);
 
   return (
     <List className={'col-span-3 border-2 rounded-md'}>
@@ -72,9 +106,15 @@ export default function ChatList() {
         {isLoading ? (
           <LinearProgress color="success" />
         ) : (
-          chatsData?.map((chat: Chat) => {
+          chats?.map((chat: Chat) => {
+            let classes = 'border-2 rounded-xl bg-green-800';
+
+            if (chat.id === chatState?.chatId) {
+              classes = 'border-2 rounded-xl bg-green-500';
+            }
+
             return (
-              <ListItem className={'border-2 rounded-xl'} key={chat.id} disablePadding style={style}>
+              <ListItem className={classes} key={chat.id} disablePadding>
                 <ListItemButton
                   className={'rounded'}
                   onClick={(e) =>
@@ -92,6 +132,16 @@ export default function ChatList() {
                     />
                   </Col>
                 </ListItemButton>
+                {chat.notify_count ?? false ? (
+                  <div
+                    className="m-2 font-bold text-gray-700 rounded-full bg-white flex items-center justify-center font-mono"
+                    style={{ height: '20px', width: '20px' }}
+                  >
+                    {chat.notify_count}
+                  </div>
+                ) : (
+                  ''
+                )}
               </ListItem>
             );
           })
