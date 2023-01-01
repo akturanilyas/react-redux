@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
+import MessageIcon from '@mui/icons-material/Message';
 import { useGetChatIdMutation } from '../../api/services/chat/chatService';
 import { useChatUsersQuery } from '../../api/services/user/user';
 import { setChatState } from '../../redux/slices/mainSlice';
@@ -49,7 +50,7 @@ export default function PeopleListPopup(props: PeopleListPopupProps) {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <MessageIcon color={'success'} />
           </IconButton>
         </Tooltip>
       </Box>

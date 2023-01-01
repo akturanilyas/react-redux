@@ -28,19 +28,11 @@ export default function Root() {
 
   return (
     <ThemeProvider theme={mdTheme}>
-      <Box
-        sx={{
-          maxHeight: '100vh',
-        }}
-      >
-        <Container maxWidth="xl">
-          <Routes>
-            {pages.map((item) => {
-              return <Route key={item.url} path={item.url} element={item.component} />;
-            })}
-          </Routes>
-        </Container>
-      </Box>
+      <Routes>
+        {pages.map((item) => {
+          return <Route key={item.url} path={item.url} element={item.component} />;
+        })}
+      </Routes>
     </ThemeProvider>
   );
 }

@@ -1,19 +1,18 @@
-import { AppBar, Box, LinearProgress, List, TextField, Toolbar, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { useLazyMessagesQuery } from '../../api/services/message/messageService';
 import { ChatEvent } from '../../enums/chatEvent';
-import { MessageDirection } from '../../enums/messageDirection';
-import { useGlobalLoading } from '../../redux/slices/loadingSlice';
 import { useMain } from '../../redux/slices/mainSlice';
 import { getSocket } from '../../services/socketService';
 import { Message as MessageType } from '../../types/models';
-import { Message } from '../message/Message';
+import { Messages } from './Messages';
+import { CustomizedTextField } from '../common/TextField';
+import { SelectChatText } from './ChatSelectText';
+import { ChatBar } from './ChatBar';
 
 export const MessageBox = () => {
-  const [text, setText] = useState('');
+  const [text, setText] = useState<string>('');
   const { chatState, user } = useMain();
-  const { loading: isLoading } = useGlobalLoading();
   const [socket, setSocket] = useState<null | Socket>(null);
   const [messages, setMessages] = useState<Array<MessageType>>([]);
   const [getMessages] = useLazyMessagesQuery();
@@ -22,7 +21,7 @@ export const MessageBox = () => {
     socket?.emit(ChatEvent.SEND_MESSAGE, { targetId, targetType, text });
   };
 
-  const send = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const send = (e: any) => {
     if ('Enter' === e.key) {
       sendMessage(text, chatState!.targetId, chatState!.targetType);
       setText('');
@@ -34,9 +33,9 @@ export const MessageBox = () => {
   };
 
   const addMessage = (response: MessageType) => {
-    const checkMessage = messages.find((item) => response.id === item.id);
+    const checkMessage = messages.find((item: MessageType) => response.id === item.id);
 
-    if (!checkMessage) {
+    if (!checkMessage && response.id === chatState?.chatId) {
       setMessages((messages) => [...messages, response]);
     } else {
       console.log('mesaj var zaten');
@@ -68,53 +67,16 @@ export const MessageBox = () => {
   }, [chatState?.chatId]);
 
   return (
-    <>
-      <Box className="col-8 border-2 rounded" sx={{ height: '80vh' }}>
-        {!chatState?.chatId ? (
-          <h1>Chat Seç</h1>
-        ) : (
-          <>
-            <AppBar position="static">
-              <Toolbar>
-                <Typography variant="h6" color="inherit" component="div">
-                  {chatState?.chat?.user?.first_name}
-                </Typography>
-              </Toolbar>
-            </AppBar>
-            <List className={'border'} sx={{ overflow: 'auto', height: '80%' }}>
-              {/* eslint-disable-next-line no-nested-ternary */}
-              {messages?.length === 0 ? (
-                <h1>Mesaj yok</h1>
-              ) : isLoading > 0 ? (
-                <LinearProgress color="success" />
-              ) : (
-                messages?.map((message) => {
-                  return (
-                    <div className="d-flex" key={message.id}>
-                      <Message
-                        key={message.id}
-                        text={message.text}
-                        userName={message.sender?.username ?? 'username'}
-                        direction={
-                          message?.sender?.id === user?.id ? MessageDirection.OUTBOUND : MessageDirection.INBOUND
-                        }
-                        time={message.created_at}
-                      />
-                    </div>
-                  );
-                })
-              )}
-            </List>
-            <TextField
-              className={'w-100 my-2'}
-              style={{ height: '10%' }}
-              value={text}
-              onKeyDown={send}
-              onChange={changeText}
-            />
-          </>
-        )}
-      </Box>
-    </>
+    <div className="col-span-9 h-full" style={{ height: 'inherit' }}>
+      {!chatState?.chatId ? (
+        <SelectChatText />
+      ) : (
+        <>
+          <ChatBar username={chatState.chat?.usersChats[0].target.username} />
+          <Messages messages={messages} />
+          <CustomizedTextField onSubmit={send} text={text} onChange={changeText} />
+        </>
+      )}
+    </div>
   );
 };

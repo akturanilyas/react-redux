@@ -16,10 +16,11 @@ function App() {
   const { user } = useMain();
   const accessToken = localStorage.getItem(TOKEN);
   const [getSelf] = useLazySelfQuery();
+
   const handleLayout = () => {
     if (!isEmpty<User>(user) && !isEmpty(accessToken)) {
       return (
-        <div style={{ position: 'absolute', top: 0, left: 0, height: '100vh', width: '100%' }}>
+        <div className="min-h-screen">
           <Routes>
             <Route path={'*'} element={<Root />} />
           </Routes>

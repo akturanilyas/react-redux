@@ -8,8 +8,13 @@ module.exports = {
   extends: ['airbnb-base', 'plugin:jest/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 12,
+    ecmaVersion: 2022,
     sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true, // Allows for the parsing of JSX
+      modules: true,
+      experimentalObjectRestSpread: true,
+    },
   },
   plugins: ['@typescript-eslint'],
   rules: {

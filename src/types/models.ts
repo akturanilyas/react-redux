@@ -22,6 +22,10 @@ export interface User {
   photo_url?: string;
 }
 
+export interface Group {
+  username: string;
+}
+
 export interface Message {
   id: number;
   created_at: Date;
@@ -34,29 +38,28 @@ export interface Message {
   direction: string;
 }
 
-export interface Chat {
+export interface UsersChat {
   id: number;
   created_at: Date;
   updated_at: Date;
   deleted_at: Date;
-  type?: string;
-  notify_count: number;
-  messages: Message[];
   user: User;
-}
-
-export interface ChatUser {
-  id: number;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at: Date;
-  type?: string;
-  user: User;
-  target: User;
   chat_id: number;
   target_id: number;
   target_type: string;
+  target: User;
   messages: Message[];
+}
+
+export interface Chat {
+  created_at: Date;
+  deleted_at: Date;
+  id: number;
+  messages: Message[];
+  notify_count: number | undefined;
+  type?: string;
+  updated_at: Date;
+  usersChats: UsersChat[];
 }
 
 export interface ChatState {
