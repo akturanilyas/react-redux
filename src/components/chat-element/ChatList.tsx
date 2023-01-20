@@ -75,7 +75,6 @@ export default function ChatList() {
 
   useEffect(() => {
     if (user?.id && !socketIsCalled.current) {
-      console.log(user?.id);
       getSocket().then((socket) => {
         socket.on(`messageEmit-${user!.id}`, (response: MessageType) => {
           setLastMessage(response);

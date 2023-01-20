@@ -21,15 +21,13 @@ export async function getSocket() {
 
 export const socketListener = async (dispatch: Dispatch<AnyAction>, event: any, evenName: string) => {
   const ws = await getSocket();
-  console.log('socketListener');
   try {
     const listener = (response: MessageEvent) => {
       dispatch(event(response));
-      console.log(response);
     };
 
     ws.on(evenName, listener);
   } catch (e) {
-    console.log(e);
+    //
   }
 };

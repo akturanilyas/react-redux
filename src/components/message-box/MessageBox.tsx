@@ -35,7 +35,6 @@ export const MessageBox = () => {
   const addMessage = (response: MessageType) => {
     const checkMessage = messages.find((item: MessageType) => response.id === item.id);
 
-    debugger;
     if (!checkMessage && response.chat_id === chatState?.chatId) {
       setMessages((messages) => [...messages, response]);
     }
@@ -44,7 +43,6 @@ export const MessageBox = () => {
   useEffect(() => {
     if (chatState?.chatId) {
       getSocket().then((socket) => {
-        console.log('socketegirdi');
         setSocket(socket);
         socket.on(`messageEmit-${user!.id}`, (response: MessageType) => {
           addMessage(response);
