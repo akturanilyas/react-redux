@@ -35,10 +35,9 @@ export const MessageBox = () => {
   const addMessage = (response: MessageType) => {
     const checkMessage = messages.find((item: MessageType) => response.id === item.id);
 
-    if (!checkMessage && response.id === chatState?.chatId) {
+    debugger;
+    if (!checkMessage && response.chat_id === chatState?.chatId) {
       setMessages((messages) => [...messages, response]);
-    } else {
-      console.log('mesaj var zaten');
     }
   };
 
